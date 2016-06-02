@@ -13,6 +13,7 @@ module.exports = function (grunt) {
 };
 var webpackConfig = require('./webpack.config.js');
 var webpack = require('webpack');
+var path = require("path");
   // Define the configuration for all the tasks
 grunt.initConfig({
 
@@ -82,16 +83,17 @@ grunt.initConfig({
       options: {
 
         webpack: webpackConfig,
-        publicPath:"/" + paths.dest,
-
+        publicPath:"/",
+        contentBase: path.join(__dirname,paths.dest),
         port:9001
       },
       start: {
 
-        keepAlive: true,
+
         webpack: {
           entry: paths.entry,
           devtool:"eval",
+          keepAlive: true,
           debug: true
         }
       }

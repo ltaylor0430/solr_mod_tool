@@ -4,18 +4,16 @@ the Gruntfile for building our app.
 Does not need gulp in order to do so,
 but we use gulp to orchestrate
  */
-var path = require("path");
+
 var webpack = require("webpack");
-var nodeExternals = require('webpack-node-externals');
 module.exports = {
 
   output: {
-
-    filename: 'bundle.js'
+   filename: 'bundle.js'
   },
 
   devtool: 'sourcemap',
-  watch: true,
+
   module: {
     loaders: [
       { test: /\.html$/, loader: 'raw' },
@@ -37,14 +35,7 @@ module.exports = {
   stylus: {
     use: [require('jeet')(), require('rupture')()]
   },
-  node: {
-    console: 'empty',
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty',
-    dns:'empty'
-  },
- 
+
   plugins: [
     new webpack.ProvidePlugin({
       // Automtically detect jQuery and $ as free var in modules

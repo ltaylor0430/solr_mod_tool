@@ -11,6 +11,10 @@ export const schema = angular.module('schema', [])
   $stateProvider.state('schema', {
     url: '/',
     template: '<schema></schema>'
+  }).state('schema.editFieldType',{
+    url:'/edit/fieldType/:id',
+    template:'<editFieldType></editFieldType>'
+
   });
 })
 .directive('schema', schemaDirective);

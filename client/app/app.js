@@ -19,8 +19,10 @@ import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import {appDirective} from './app.directive';
 import {schema} from './components/schema/schema';
+import {shared} from './shared/shared';
 angular.module('app',
                [uiRouter,
-                schema.name
+                schema.name,
+                shared.name
               ])
 .directive('app', appDirective);
