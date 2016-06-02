@@ -8,7 +8,10 @@
     <li>Option 2, Import the data by loading the schema.xml. preferably choose option 1.</li>
 
   <label>Click here to load solr schema.xml file</label>
-  <button>Load</button>
+  <form  enctype="multipart/form-data" method="post" action="{{formAction}}">
+  <input type="file" name="xmlschema" size="0"/>
+  <input class="button" type="submit" value="Load"/>
+  </form>
 </section>
 
   <section class="solrUrl">
@@ -30,7 +33,7 @@
      <div  class="itemContainer">
        <div class="items" ng-repeat="item in vm.solrTypes track by $index">
          <span ng-class="{'newItem' : item.isNew }" ng-bind="item.fieldName"></span>
-         <button class="destroy" ng-click="removeFieldType(item,$index)"><i class="fa fa-times"></i></button>
+         <button class="destroy" ng-click="vm.removeFieldType(item,$index)"><i class="fa fa-times"></i></button>
        </div>
     </div>
   </section>
@@ -49,28 +52,28 @@
     <div  class="items" ng-repeat="item in vm.solrFields track by $index">
       <span ng-class="{'newItem' : item.isNew }" ng-bind="item.fieldName"></span>
       <button class="edit"><i class="fa fa-pencil"></i></button>
-      <button class="destroy" ng-click="removeField(item,$index)"><i class="fa fa-times"></i></button>
+      <button class="destroy" ng-click="vm.removeField(item,$index)"><i class="fa fa-times"></i></button>
     </div>
     </div>
   </section>
 
-  <section class="SolrCopyFields">
+  <section class="solrCopyField">
     <h2>Copy Fields</h2>
-    <div>
-      <input type="text" placeholder="Copy From" ng-modal="copyItems.copyFrom"/>
-      <input type="text" placeholder="Copy Destination" ng-modal="copyItems.copyTo"/>
-      <button ng-click="addCopyField(copyItems)">Add</button>
-    </div>
-    <ul ng-repeat="item in vm.solrCopyFields track by $index">
-       <li>
-        
-       <label for="copyFrom">From:</label>
-       <span name="copyFrom" ng-model="item.copyFrom" />
-       <label for="copyTo">To:</label>
-       <span ng-model="item.copyTo" />
-       <button class="destroy" ng-click="removeCopyField(item,$index)"><i class="fa fa-times"></i></button>
-       </li>
+      <form>
+        <label for="fieldName">Field Name</label>
+      <input type="text" name="fieldName" ng-model="cpItems.fieldName" />
+        <label for="fieldName">Field Type</label>
+      <input type="text" name="fieldType" ng-model="cpItems.fieldType" />
+      <button ng-click="vm.addCopyField(cpItems)">Add</button>
 
-    </ul>
+    </form>
+    <div  class="itemContainer">
+    <div  class="items" ng-repeat="item in vm.solrCopyFields track by $index">
+      <span ng-class="{'newItem' : item.isNew }" ng-bind="item.fieldName"></span>
+      <button class="edit"><i class="fa fa-pencil"></i></button>
+      <button class="destroy" ng-click="vm.removeCopyField(item,$index)"><i class="fa fa-times"></i></button>
+    </div>
+    </div>
   </section>
+  
 </div>

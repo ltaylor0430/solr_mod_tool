@@ -6,6 +6,7 @@ but we use gulp to orchestrate
  */
 var path = require("path");
 var webpack = require("webpack");
+var nodeExternals = require('webpack-node-externals');
 module.exports = {
 
   output: {
@@ -14,7 +15,7 @@ module.exports = {
   },
 
   devtool: 'sourcemap',
-
+  watch: true,
   module: {
     loaders: [
       { test: /\.html$/, loader: 'raw' },
@@ -28,12 +29,22 @@ module.exports = {
       { test: /\.ttf$/,    loader: "file-loader?prefix=font/" },
       { test: /\.eot$/,    loader: "file-loader?prefix=font/" },
       { test: /\.svg$/,    loader: "file-loader?prefix=font/" },
+      { test: /\.json$/,   loader: 'json-loader'},
+      { test: /\.md$/, loader: "html!markdown" },
     ]
   },
 
   stylus: {
     use: [require('jeet')(), require('rupture')()]
   },
+  node: {
+    console: 'empty',
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    dns:'empty'
+  },
+ 
   plugins: [
     new webpack.ProvidePlugin({
       // Automtically detect jQuery and $ as free var in modules

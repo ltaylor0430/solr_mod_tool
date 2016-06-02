@@ -1,21 +1,22 @@
+
  class SchemaController {
     //TODO: Load Schema.xml
 
   // bind to this and not $scope
   // because of controllerAs.
-    constructor() {
+    constructor($log) {
         this.solrCollectionUrl = '';
         this.solrTypes = [];
         this.solrFields = [];
         this.solrCopyFields =[];
-        this.inital = {};
+        this.inital = {fieldName: ''};
 
     //add Field
      this.addField = function(fieldDef) {
        fieldDef.isNew = true;
        this.solrFields.push(angular.copy(fieldDef));
         //clear
-      console.log(this.solrFields);
+      $log.debug(this.solrFields);
         fieldDef =    angular.copy(this.inital);
       };
     //add Field Type
@@ -26,18 +27,19 @@
       fieldType =   angular.copy(this.inital);
     };
      //add Copy Field
-   this.addCopyField = function(copyField) {
-     copyField.isNew = true;
-     this.solrCopyFields.push(angular.copy(copyField));
+   this.addCopyField = function(cpField) {
+     cpField.isNew = true;
+     this.solrCopyFields.push(angular.copy(cpField));
       //clear
-      copyField =  angular.copy(this.inital);
+      cpField =  angular.copy(this.inital);
     };
    //Remove fields
     this.removeField = function(fieldDef, $index) {
       fieldDef.remove = true;
       //remove field from schema
+        $log.debug(fieldDef);
       if (angular.isDefined(fieldDef.isNew)) {  
-        this.solrField.splice($index,1);
+        this.solrFields.splice($index,1);
       }
       else {
         this.solrFields.push(angular.copy(fieldDef));
@@ -51,6 +53,7 @@
         this.solrTypes.splice($index,1);
       }
       else {
+        
         this.solrTypes.push(angular.copy(fieldType));
       }
     };
