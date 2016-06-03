@@ -1,5 +1,6 @@
 import angular from 'angular';
 import {schemaDirective} from './schema.directive';
+import {fieldTypeDriective} from './fieldtypes/fieldtype.directive';
 
 // placing an export in front of ar var is the same
 // as exporting the var at the end of the file
@@ -10,11 +11,21 @@ export const schema = angular.module('schema', [])
 
   $stateProvider.state('schema', {
     url: '/',
-    template: '<schema></schema>'
-  }).state('schema.editFieldType',{
+    template: '<schema></schema>',
+  })
+ .state('schema.addFieldType',{
+    url:'/add/fieldType',
+    views: {
+      'addFieldType': {
+        template:'<editfieldtype></editfieldtype>'
+       }
+    }
+  })
+  .state('schema.editFieldType',{
     url:'/edit/fieldType/:id',
-    template:'<editFieldType></editFieldType>'
+    template:'<editfieldtype></editfieldtype>'
 
   });
 })
-.directive('schema', schemaDirective);
+.directive('schema', schemaDirective)
+.directive('editfieldtype',fieldTypeDriective);

@@ -4,7 +4,7 @@ import _ from 'lodash';
 
   // bind to this and not $scope
   // because of controllerAs.
-    constructor($log, SchemaLoader) {
+    constructor($log,$state, SchemaLoader) {
         this.solrCollectionUrl = 'http://solr1:8983/solr/gateway_collection';
         this.schema =  undefined;
         this.solrTypes = [];
@@ -22,6 +22,17 @@ import _ from 'lodash';
         fieldDef =    angular.copy(this.inital);
       };
     //add Field Type
+    this.newFieldType = () => {
+      if (!$state.is("schema.addFieldType")){
+      $state.go('.addFieldType');
+    } else {
+      $state.go('^');
+    }
+    };
+
+    this.addParam = () => {
+      $log.debug('wrong param function');
+    };
    this.addFieldType = function(fieldType) {
      fieldType.isNew = true;
      this.solrTypes.push(angular.copy(fieldType));

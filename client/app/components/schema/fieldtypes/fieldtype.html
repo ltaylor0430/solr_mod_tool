@@ -1,0 +1,58 @@
+<div class="editTypeTemplate">
+<form>
+  <label for="name">Name</label>
+  <input type="text" name="name" ng-model="vm.fieldType.name" placeholder="name"/>
+  <label for="class">Class</label>
+  <input type="text" name="class" ng-model="vm.fieldType.class"placeholder="class"/>
+  <label for="tokenizer">Tokenizer:</label>
+  <div class="">
+  <span ng-bind="analyzer.tokenizer.class"/>
+   </div>
+  <div class="">
+    <div ng-if="fieldTypes.analyzer.indexAnalyzer">
+    Index analyzer
+    <ul ng-repeat = "item in fieldTypes.analyzer.indexAnalyzer">
+      <li><analyzer item="item" ></analyzer></li>
+  </ul>
+  </div>
+   <div ng-if="fieldTypes.analyzer.queryAnalyzer">
+
+      Query analyzer
+    <ul ng-repeat = "item in vm.fieldTypes.analyzer.queryAnalyzer">
+      <li><analyzer item="item" ></analyzer></li>
+  </ul>
+  </div>
+   <div ng-if="fieldTypes.analyzer.Analyzer">
+      Analyzer
+    <ul ng-repeat = "item in vm.fieldTypes.analyzer.analyzer">
+      <li><analyzer item="item" ></analyzer></li>
+  </ul>
+  </div>
+
+  </div>
+  <button class="btn-default">Add/Change Tokenizer</button>
+  <button class="btn-default">Add/Change Analyzer</button>
+
+  <p style="font-size:16px;font-weight:bold">Optional Parameters</p>
+  <div class="optParams" ng-repeat="item in optParams track by $index">
+      <span>{{item.name}}={{item.value}}</span>
+  </div>
+
+  <div name="form2" no-validate >
+    <div class="col2">
+    <input  required class="" type="text" ng-model="param.name" name="paName" placeholder="Parameter Name"/>
+    <p ng-show="form.$submitted || form.paName.$touched">
+  <span ng-show="form.paName.$error.required">Name required.</span>
+    </p>
+
+    </div>
+    <div class="col2">
+    {{vm.test}}
+    <input required  class="" type="text" name="param.value" placeholder="Parameter Value"/>
+         <button class="btn-default" ng-click="vm.addParam(param)">Add Param</button>
+    </div>
+  </div>
+  <p style="text-align:right;clear:both;margin-top:10px"><button>Add</button></p>
+
+</form>
+</div>
