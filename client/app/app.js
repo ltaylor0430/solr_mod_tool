@@ -5,6 +5,7 @@
 // <style> tag in the head by default but can be changed
 import 'normalize.css';
 import 'font-awesome/css/font-awesome.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './app.styl';
 
 // the angular libs are just common js
@@ -17,12 +18,15 @@ import './app.styl';
 // their auxillary modules
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
+import modal from 'angular-ui-bootstrap/src/modal';
 import {appDirective} from './app.directive';
 import {schema} from './components/schema/schema';
 import {shared} from './shared/shared';
 angular.module('app',
                [uiRouter,
+                modal,
                 schema.name,
                 shared.name
+
               ])
 .directive('app', appDirective);

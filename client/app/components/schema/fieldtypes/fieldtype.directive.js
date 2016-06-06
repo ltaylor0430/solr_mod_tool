@@ -2,7 +2,7 @@ import './fieldtype.styl';
 import {FieldTypeController as controller} from './fieldtype.controller';
 import template from './fieldtype.html';
 
-export const fieldTypeDriective = ()=> {
+export const fieldTypeDirective = ()=> {
   return {
     template,
     controller,

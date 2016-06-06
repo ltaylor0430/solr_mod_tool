@@ -1,13 +1,22 @@
+import tokenizerTemplate from './tokenizer.tpl.html';
 class FieldTypeController {
- constructor($log, SchemaLoader) {
-    this.fieldType = {};
+ constructor($log, $uibModal) {
+    this.fieldType = {params:[]};
     this.test = 'test!';
-    this.addParam = (param) => {
-        $log.debug(param);
-
-        this.fieldType['param.name'] = param.value;
+    this.modal = undefined;
+    this.showTokenizer = () => {
+      const opts = {template: tokenizerTemplate,
+                              size:'lg'};
+      this.modal = $uibModal.open(opts);
 
     };
+    this.showAnalyzer = () => {
+      const opts = {template: analyzerTemplate,
+                              size:'lg'};
+      this.modal = $uibModal.open(opts);
+
+    };
+
 
  }
 }

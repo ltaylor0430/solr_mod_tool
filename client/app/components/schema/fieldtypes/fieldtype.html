@@ -1,5 +1,5 @@
 <div class="editTypeTemplate">
-<form>
+<form no-validate>
   <label for="name">Name</label>
   <input type="text" name="name" ng-model="vm.fieldType.name" placeholder="name"/>
   <label for="class">Class</label>
@@ -30,8 +30,7 @@
   </div>
 
   </div>
-  <button class="btn-default">Add/Change Tokenizer</button>
-  <button class="btn-default">Add/Change Analyzer</button>
+  <button ng-click="vm.showTokenizer()" class="btn-default">Add/Change Analyzer</button>
 
   <p style="font-size:16px;font-weight:bold">Optional Parameters</p>
   <div class="optParams" ng-repeat="item in optParams track by $index">
@@ -39,18 +38,7 @@
   </div>
 
   <div name="form2" no-validate >
-    <div class="col2">
-    <input  required class="" type="text" ng-model="param.name" name="paName" placeholder="Parameter Name"/>
-    <p ng-show="form.$submitted || form.paName.$touched">
-  <span ng-show="form.paName.$error.required">Name required.</span>
-    </p>
-
-    </div>
-    <div class="col2">
-    {{vm.test}}
-    <input required  class="" type="text" name="param.value" placeholder="Parameter Value"/>
-         <button class="btn-default" ng-click="vm.addParam(param)">Add Param</button>
-    </div>
+    <params binding-to="vm.fieldType.params"><params>
   </div>
   <p style="text-align:right;clear:both;margin-top:10px"><button>Add</button></p>
 
