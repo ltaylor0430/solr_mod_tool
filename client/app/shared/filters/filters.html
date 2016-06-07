@@ -1,3 +1,6 @@
+<section class="filter">
 <label for="class">Filter Class</label>
-<input type="text" name="class" ng-model="filter.class"/>
-<params binding-to="filterParam"></params>
+<input type="text" name="class" ng-model="vm.filter.class"/>
+<params binding-to="vm.filterParam"></params>
+  <button ng-click="vm.addFilter()" ><i class="fa fa-plus"></i>Add Filter</button>
+</section>

@@ -3,6 +3,7 @@ import {FieldTypeController as controller} from './fieldtype.controller';
 import template from './fieldtype.html';
 
 export const fieldTypeDirective = ()=> {
+  "use strict";
   return {
     template,
     controller,

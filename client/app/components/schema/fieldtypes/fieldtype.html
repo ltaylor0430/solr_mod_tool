@@ -1,5 +1,5 @@
 <div class="editTypeTemplate">
-<form no-validate>
+<form auto-complete="false" no-validate>
   <label for="name">Name</label>
   <input type="text" name="name" ng-model="vm.fieldType.name" placeholder="name"/>
   <label for="class">Class</label>
@@ -30,7 +30,7 @@
   </div>
 
   </div>
-  <button ng-click="vm.showTokenizer()" class="btn-default">Add/Change Analyzer</button>
+  <button ng-click="vm.showAnalyzer()" class="btn-default">Add/Change Analyzer</button>
 
   <p style="font-size:16px;font-weight:bold">Optional Parameters</p>
   <div class="optParams" ng-repeat="item in optParams track by $index">
