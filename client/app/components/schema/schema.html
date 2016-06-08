@@ -22,12 +22,12 @@
   <button ng-click="vm.importSchema()">Import</button>
   <span ng-show="vm.imported">Successfully, imported data.</span>
   </section>
-<section ng-show ="vm.schema">
+<section ng-show ="vm.imported">
   <section class="solrTypes">
     <h2>Field Types</h2>
     <div ui-view="addFieldType"></div>
      <button ng-click="vm.newFieldType()">Add New Type</button>
-    <button ng-click="isAddNewFieldType = !isAddNewFieldType">Filter New Type</button>
+    <button ng-click="vm.isAddNewFieldType = !vm.isAddNewFieldType">Filter New Type</button>
     <br/>
   <label>Your field types</label>
      <div  ng-show=" vm.solrTypes.length> 0"  class="itemContainer">
@@ -44,9 +44,9 @@
     <h2>Fields</h2>
       <form>
         <label for="fieldName">Field Name</label>
-      <input type="text" name="fieldName" ng-model="fieldDef.name" />
+      <input type="text" autocomplete="off" name="fieldName" ng-model="fieldDef.name" />
         <label for="fieldName">Field Type</label>
-      <input type="text" name="fieldType" ng-model="fieldDef.type" />
+      <input type="text" autocomplete="off" name="fieldType" ng-model="fieldDef.type" />
       <button ng-click="vm.addField(fieldDef)">Add</button>
 
     </form>
@@ -65,9 +65,9 @@
     <h2>Copy Fields</h2>
       <form>
         <label for="fieldName">Copy Destination</label>
-      <input type="text" name="fieldName" ng-model="cpItems.dest" />
+      <input type="text" autocomplete="off" name="fieldName" ng-model="cpItems.dest" />
         <label for="fieldName">Copy Source</label>
-      <input type="text" name="fieldType" ng-model="cpItems.source" />
+      <input type="text" autocomplete="off" name="fieldType" ng-model="cpItems.source" />
       <button ng-click="vm.addCopyField(cpItems)">Add</button>
 
     </form>

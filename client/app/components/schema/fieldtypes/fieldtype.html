@@ -1,9 +1,9 @@
 <div class="editTypeTemplate">
 <form auto-complete="false" no-validate>
   <label for="name">Name</label>
-  <input type="text" name="name" ng-model="vm.fieldType.name" placeholder="name"/>
+  <input type="text" autocomplete="off" name="name" ng-model="vm.fieldType.name" placeholder="name"/>
   <label for="class">Class</label>
-  <input type="text" name="class" ng-model="vm.fieldType.class"placeholder="class"/>
+  <input type="text" autocomplete="off"  name="class" ng-model="vm.fieldType.class"placeholder="class"/>
   <label for="tokenizer">Tokenizer:</label>
   <div class="">
   <span ng-bind="analyzer.tokenizer.class"/>
@@ -40,7 +40,7 @@
   <div name="form2" no-validate >
     <params binding-to="vm.fieldType.params"><params>
   </div>
-  <p style="text-align:right;clear:both;margin-top:10px"><button>Add</button></p>
+  <p style="text-align:right;clear:both;margin-top:10px"><button ng-click="vm.addFieldType()">Add</button></p>
 
 </form>
 </div>

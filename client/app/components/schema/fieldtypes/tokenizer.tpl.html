@@ -3,22 +3,19 @@
 </div>
 <div class="modal-body">
   <!--Tokenizer class -->
-  <div class="">
+  <div class="analyzer">
     <input name="tokenizerType" ngModel="vm.tokenizerType" value="indexquery" type="radio"  checked>Index &amp; Query</label>
     <label><input  ng-model="vm.tokenizerType" value="separate"  name="tokenizerType" type="radio" />Separate</label>
 </div>
 <h1>Tokenizer</h1>
-    <input type="text"  ng-model="vm.tokenizerClass" name="class" placeholder="Tokenizer Class"/>
+    <input type="text" autocomplete="off"  ng-model="vm.tokenizerClass" name="class" placeholder="Tokenizer Class"/>
     <!-- Tokenizer params -->
     Tokenizer Parameters
-   <params></params>
+   <params binding-to="vm.tokenizerParams"></params>
 
   <div class="clearfix"/>
-  <section class="filters"><h1>Filters</h1>
-  <filters binding-to="vm.filters"></filters>
 
-  <h1>Organized Filters</h1>
-  </section>
+  <filters binding-to="vm.filters"></filters>
 
   <div class="clear"></div>
   <div class="modal-footer">

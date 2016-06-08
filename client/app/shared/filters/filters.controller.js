@@ -4,15 +4,16 @@ class FiltersController {
     this.filters = $scope.bindingTo || [];
     this.filterParam = [];
     this.filter = {};
+
     this.addFilter = () =>{
       let newFilter = {};
       newFilter.class =this.filter.class;
       //copy all params
     $log.debug(this.filterParam);
-    _.chain(this.filterParam)
-      .forEach()
-      .forIn
-      .extend(newFilter);
+    _(this.filterParam)
+      .forEach((item) => {
+          _.extend(newFilter,item);
+      });
     //newFilter = angular.extend(newFilter,this.filterParam);
     //add filter
     this.filters.push(newFilter);
@@ -26,6 +27,9 @@ class FiltersController {
 
     this.reset = () => {
       this.filter.class = '';
+      //clear array using .length property,
+      //reassignment using filterParams =[] breaks ng-repeat
+      this.filterParam.length = 0;
     };
   }
 }

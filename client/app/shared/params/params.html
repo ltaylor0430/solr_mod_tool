@@ -11,8 +11,9 @@
     <input  class="" type="text" ng-model="param.value" name="param.value" placeholder="Parameter Value"/>
          <button class="btn-default" ng-click="vm.addParam(param)">Add Param</button>
     </div>
+    <div class="clearfix"></div>
     <div ng-repeat="item in vm.params track by $index">
-      <div ng-repeat="(key,value) in item track by $index">
+      <div class="col2" ng-repeat="(key,value) in item track by $index">
         <div class="col2"><span ng-bind="key"></span>
         </div>
         <div class="col2"><span ng-bind="value"></span>

@@ -1,6 +1,6 @@
 class ParamsController {
   constructor($scope) {
-    this.params = $scope.bindingTo || [];
+    this.params = $scope.bindingTo;
     this.addParam = (param) =>{
       const newParam = {};
       newParam['' +param.name] = param.value;
@@ -11,7 +11,11 @@ class ParamsController {
     };
     this.getParams = () => {
       return this.params;
-    }
+    };
+    this.clearParams = () => {
+        this.params = [];
+    };
+
   }
 }
 export {ParamsController};

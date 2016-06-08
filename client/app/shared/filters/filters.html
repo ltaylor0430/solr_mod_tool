@@ -1,6 +1,17 @@
+
 <section class="filter">
+<h3>Filters</h3>
 <label for="class">Filter Class</label>
 <input type="text" name="class" ng-model="vm.filter.class"/>
-<params binding-to="vm.filterParam"></params>
+<params id="params" binding-to="vm.filterParam"></params>
+<div class="clearfix"></div>
   <button ng-click="vm.addFilter()" ><i class="fa fa-plus"></i>Add Filter</button>
+<section class="organizeFilter">
+<h3>Organized Filters</h3>
+<ul ng-repeat="item in vm.filters">
+  <li>{{item.class}}</li>
+</ul>
+
+</section>
+
 </section>
