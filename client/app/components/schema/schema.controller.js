@@ -7,10 +7,13 @@ import _ from 'lodash';
     constructor($log,$state, SchemaAPI) {
         this.solrCollectionUrl = 'http://solr1:8983/solr/gateway_collection';
         this.schema =  undefined;
-
+        this.isAddNewFieldType = false;
         this.inital = {fieldName: ''};
         this.SchemaAPI = SchemaAPI;
         this.imported = false;
+        this.hasNew = () => {
+            return (this.isAddNewFieldType ? '!!' : '!');
+        };
     //add Field
      this.addField = function(fieldDef) {
       this.SchemaAPI.addField(fieldDef);
@@ -51,8 +54,10 @@ import _ from 'lodash';
  this.removeCopyField = function(copyField,$index) {
         this.SchemaAPI.removeCopyField(copyField, $index);
     };
-
-    this.importSchema = () => {
+  this.export = () =>{
+    this.schemaChanges = this.SchemaAPI.exportSchemaChanges();
+  };
+  this.importSchema = () => {
       this.SchemaAPI.importFromServer(this.solrCollectionUrl).then(()=>{
              this.imported = true;
            $log.debug(SchemaAPI.solrTypes());
@@ -62,6 +67,9 @@ import _ from 'lodash';
       });
 
     };
+
+
+
   }
 }
   export {SchemaController};

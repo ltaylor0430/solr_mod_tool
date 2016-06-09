@@ -3,7 +3,8 @@ import _ from 'lodash';
 
 class FieldTypeController {
  constructor($log,$state, $uibModal,SchemaAPI) {
-    this.fieldType = {params:[]};
+    this.fieldType = {};
+    this.params = [];
     this.test = 'test!';
     this.modal = undefined;
     this.SchemaAPI = SchemaAPI;
@@ -52,8 +53,14 @@ class FieldTypeController {
 
       };
     this.addFieldType = () => {
-      //add field type
+      //add field type, but 1st add all optional params
+      //TODO: reference fieldType as the destination object in directive
+      _(this.params)
+          .forEach((item) => {
+              _.extend(this.fieldType,item);
+      });
       this.SchemaAPI.addFieldType( this.fieldType);
+      $log.debug(this.fieldType);
        $state.go('^');
 
     };
