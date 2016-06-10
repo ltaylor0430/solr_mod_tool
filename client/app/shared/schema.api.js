@@ -100,80 +100,53 @@ const schemaAPI= ($http,$log) => {
       dest+= item ;
       return dest;
     };
+    const getOutput = (command,output,key,_array) =>{
+      _.chain(_array).filter({[key]: true})
+          .map( (o)=>{
+              o =_.omit(o,[key]);
+              if (command ==='delete-field-type') {
+                  return {[command]: {name: o.name}};
+              } else {
+                $log.debug(o);
+                  return {[command]: o};
+            }
+          }).forEach((value)=>{
+            output = formatForSolr(output,JSON.stringify(value));
+          }).value();
+          $log.debug(output);
+            return output;
+    };
     //The actual json has duplicate keys which is technically invalid.  need to  massage the output to
     //allow this to happen
     //
 const exportSchemaChanges = () =>{
-  //TO DO:map fieldtypes
-  //"add-field-type" : {
- let output = '';
- let newFieldTypes = _.chain(solrTypes).filter({'isNew': true})
-  .map( (o)=>{
-      o =_.omit(o,['isNew']);
-      return {'add-field-type': o};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
-  $log.debug(output);
-   let  removeFieldTypes = _.chain(solrTypes).filter({'remove': true})
-  .map( (o)=>{
-      return {'delete-field-type': {name: o.name}};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
-  let  replaceFieldTypes = _.chain(solrCopyFields).filter({'replace': true})
-  .map( (o)=>{
-    o =_.omit(o,['replace']);
-      return {'replace-field-type': o};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
 
-//fields
-  let newFields = _.chain(solrFields).filter({'isNew': true})
-  .map( (o)=>{
-      o =_.omit(o,['isNew']);
-      return {'add-field': o};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
-   let  removeFields= _.chain(solrFields).filter({'remove': true})
-  .map( (o)=>{
-      return {'delete-field': {name: o.name}};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
-  let  replaceField = _.chain(solrFields).filter({'replace': true})
-  .map( (o)=>{
-    o =_.omit(o,['replace']);
-      return {'replace-field': o};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
+     let output = '';
+     let typeCommands = [{command: 'add-field-type',  key:'isNew'},
+                                         {command: 'delete-field-type',  key:'remove'},
+                                         {command:'replace-field-type',  key:'replace'}];
+     let fieldCommands = [{command: 'add-field',  key:'isNew'},
+                                         {command: 'delete-field',  key:'remove'},
+                                         {command:'replace-field',  key:'replace'}];
 
-//copy fields
-   let  copyFields = _.chain(solrCopyFields).filter({'isNew': true})
-  .map( (o)=>{
-    o =_.omit(o,['isNew']);
-      return {'add-copy-field': o};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
+    let copyCommands = [{command: 'add-copy-field',  key:'isNew'},
+                                         {command: 'delete-copy-field',  key:'remove'}];
 
-   let  removeCopyFields = _.chain(solrCopyFields).filter({'remove': true})
-  .map( (o)=>{
-      return {'delete-copy-field': o};
-  }).forEach((value)=>{
-    output = formatForSolr(output,JSON.stringify(value));
-  }).value();
-  $log.debug('newField Types');
-  $log.debug(newFieldTypes);
 
-  //map fields
+    _.each(typeCommands, (c) => {
+      output = getOutput(c.command,output,c.key,solrTypes);
+    });
 
- //_.merge(schema, newFieldTypes,removeFieldTypes,replaceFieldTypes,newFields,replaceField,removeFields,copyFields,removeCopyFields);
- $log.debug(output);
- return output;
+    //fields
+     _.each(fieldCommands, (c) => {
+      output = getOutput(c.command,output,c.key,solrFields);
+    });
+     _.each(copyCommands, (c) => {
+      output = getOutput(c.command,output,c.key,solrCopyFields);
+    });
+
+     $log.debug(output);
+     return output;
 };
   return {getSchema,
               setSchema,
