@@ -1,0 +1,46 @@
+<div class="editTypeTemplate">
+<form auto-complete="false" no-validate>
+  <label for="name">Name</label>
+  <input type="text" autocomplete="off" name="name" ng-model="vm.fieldType.name" placeholder="name"/>
+  <label for="class">Class</label>
+  <input type="text" autocomplete="off"  name="class" ng-model="vm.fieldType.class"placeholder="class"/>
+  <label for="tokenizer">Tokenizer:</label>
+  <div class="">
+  <span ng-bind="analyzer.tokenizer.class"/>
+   </div>
+  <div class="">
+    <div ng-if="fieldTypes.analyzer.indexAnalyzer">
+    Index analyzer
+    <ul ng-repeat = "item in fieldTypes.analyzer.indexAnalyzer">
+      <li><analyzer item="item" ></analyzer></li>
+  </ul>
+  </div>
+   <div ng-if="fieldTypes.analyzer.queryAnalyzer">
+
+      Query analyzer
+    <ul ng-repeat = "item in vm.fieldTypes.analyzer.queryAnalyzer">
+      <li><analyzer item="item" ></analyzer></li>
+  </ul>
+  </div>
+   <div ng-if="fieldTypes.analyzer.Analyzer">
+      Analyzer
+    <ul ng-repeat = "item in vm.fieldTypes.analyzer.analyzer">
+      <li><analyzer item="item" ></analyzer></li>
+  </ul>
+  </div>
+
+  </div>
+  <button ng-click="vm.showAnalyzer()" class="btn-default">Add/Change Analyzer</button>
+
+  <p style="font-size:16px;font-weight:bold">Optional Parameters</p>
+  <div class="optParams" ng-repeat="item in optParams track by $index">
+      <span>{{item.name}}={{item.value}}</span>
+  </div>
+
+  <div name="form2" no-validate >
+    <params binding-to="vm.params"><params>
+  </div>
+  <p style="text-align:right;clear:both;margin-top:10px"><button ng-click="vm.addFieldType()">Add</button></p>
+
+</form>
+</div>

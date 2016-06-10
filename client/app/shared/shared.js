@@ -1,7 +1,10 @@
 import {api} from './api';
-import {schemaLoader} from './schema.loader';
+import {schemaAPI} from './schema.api';
 import angular from 'angular';
-
+import {paramDirective} from './params/param.directive';
+import {filtersDirective} from './filters/filters.directive';
 export const shared = angular.module('shared', [])
   .constant('API', api)
-  .factory('SchemaLoader', schemaLoader);
+  .factory('SchemaAPI', schemaAPI)
+  .directive('params', paramDirective)
+  .directive('filters', filtersDirective);

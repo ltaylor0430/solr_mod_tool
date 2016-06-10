@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h3 class="modal-title">Analyzer</h3>
+</div>
+<div class="modal-body">
+  <!--Tokenizer class -->
+  <div class="analyzer">
+    <input name="tokenizerType" ngModel="vm.tokenizerType" value="indexquery" type="radio"  checked>Index &amp; Query</label>
+    <label><input  ng-model="vm.tokenizerType" value="separate"  name="tokenizerType" type="radio" />Separate</label>
+</div>
+<h1>Tokenizer</h1>
+    <input type="text" autocomplete="off"  ng-model="vm.tokenizerClass" name="class" placeholder="Tokenizer Class"/>
+    <!-- Tokenizer params -->
+    Tokenizer Parameters
+   <params binding-to="vm.tokenizerParams"></params>
+
+  <div class="clearfix"/>
+
+  <filters binding-to="vm.filters"></filters>
+
+  <div class="clear"></div>
+  <div class="modal-footer">
+    <button type="button" ng-click="vm.saveAnalyzer()">Save</button>
+    <button type="button" ng-click="$close()">Cancel</button>
+  </div>
+</div>

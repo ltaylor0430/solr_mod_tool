@@ -17,12 +17,12 @@ form
   border-radius 7px
   margin-bottom 10px
 .itemContainer
+  center()
   max-height 400px
   overflow-y auto
   overflow-x hidden
   padding 15px
-  center()
-
+  clear both
   background-color #5C5B5B
   ul
     list-style none
@@ -30,7 +30,7 @@ form
 
 
   .items
-    col(1/5)
+    span(1/3)
     color white
     position relative
     text-align right
@@ -52,3 +52,6 @@ form
 .newItem
   font-style italic
   color new-color
+
+.newChanges
+  padding-top:20px

@@ -1,6 +1,5 @@
 @import '../styles'
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700);
-
+/*@import url(http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700);*/
 html
 body
   height 100%
@@ -10,9 +9,14 @@ body
   background-color bg-color
   *
     box-sizing border-box
+.nav, .pagination, .carousel, .panel-title a
+    cursor: pointer
 nav
     height nav-height
     background-color header-color
+    a, a:hover,a:focus
+      color white
+      text-decoration none
     .logo
       span(1/8)
       color white
@@ -84,3 +88,8 @@ button, .button
 
 button:hover
   background #238FFB
+.btn-default
+  background-color #5c5b5b
+  &:hover
+    background-color #434343
+

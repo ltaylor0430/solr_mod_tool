@@ -4,87 +4,72 @@ import _ from 'lodash';
 
   // bind to this and not $scope
   // because of controllerAs.
-    constructor($log, SchemaLoader) {
+    constructor($log,$state, SchemaAPI) {
         this.solrCollectionUrl = 'http://solr1:8983/solr/gateway_collection';
         this.schema =  undefined;
-        this.solrTypes = [];
-        this.solrFields = [];
-        this.solrCopyFields =[];
+        this.isAddNewFieldType = false;
         this.inital = {fieldName: ''};
-        this.SchemaLoader = SchemaLoader;
+        this.SchemaAPI = SchemaAPI;
         this.imported = false;
+        this.hasNew = () => {
+            return (this.isAddNewFieldType ? '!!' : '!');
+        };
     //add Field
      this.addField = function(fieldDef) {
-       fieldDef.isNew = true;
-       this.solrFields.push(angular.copy(fieldDef));
-        //clear
-      $log.debug(this.solrFields);
-        fieldDef =    angular.copy(this.inital);
+      this.SchemaAPI.addField(fieldDef);
       };
     //add Field Type
+    this.newFieldType = () => {
+      if (!$state.is("schema.addFieldType")){
+      $state.go('.addFieldType');
+    } else {
+      $state.go('^');
+    }
+    };
+
+    this.addParam = () => {
+      $log.debug('wrong param function');
+    };
    this.addFieldType = function(fieldType) {
-     fieldType.isNew = true;
-     this.solrTypes.push(angular.copy(fieldType));
-      //clear
-      fieldType =   angular.copy(this.inital);
+       this.SchemaAPI.addFieldType(fieldType);
+
     };
      //add Copy Field
    this.addCopyField = function(cpField) {
-     cpField.isNew = true;
-     this.solrCopyFields.push(angular.copy(cpField));
-      //clear
-      cpField =  angular.copy(this.inital);
+      this.SchemaAPI.addCopyField(cpField);
+      this.reset();
     };
    //Remove fields
     this.removeField = function(fieldDef, $index) {
-      fieldDef.remove = true;
-      //remove field from schema
-        $log.debug(fieldDef);
-      if (angular.isDefined(fieldDef.isNew)) {
-        this.solrFields.splice($index,1);
-      }
+       this.SchemaAPI.removeField(fieldDef, $index);
+
     /*  else {
         this.solrFields.push(angular.copy(fieldDef));
       }
 */
     };
  this.removeFieldType = function(fieldType, $index) {
-      fieldType.remove = true;
-      //remove field from schema
-      if (angular.isDefined(fieldType.isNew)) {
-        this.solrTypes.splice($index,1);
-      }
-      else {
-
-        this.solrTypes.push(angular.copy(fieldType));
-      }
+     this.SchemaAPI.removeFieldType(fieldType, $index);
     };
-   this.removeCopyField = function(copyField,$index) {
-      copyField.remove = true;
-       if (angular.isDefined(copyField.isNew)) {
-        this.solrTypes.splice($index,1);
-      }
-      else {
-      //remove field from schema
-      this.solrCopyFields.push(angular.copy(copyField));
-      }
+ this.removeCopyField = function(copyField,$index) {
+        this.SchemaAPI.removeCopyField(copyField, $index);
     };
-    this.importSchema = () => {
-        if(this.imported === false) {
-            $log.debug('importing schema');
-            this.SchemaLoader.importConfiguration(this.solrCollectionUrl).then(() => {
-            this.schema = this.SchemaLoader.getSchema();
-            this.imported = true;
-            $log.debug(this.schema);
-            this.solrFields = _.concat(this.solrFields,angular.copy(this.schema.fields));
-            this.solrTypes = _.concat(this.solrTypes,angular.copy(this.schema.fieldTypes));
-            this.solrCopyFields = _.concat(this.solrCopyFields,angular.copy(this.schema.copyFields));
-
-
-
+  this.export = () =>{
+    this.schemaChanges = this.SchemaAPI.exportSchemaChanges();
+  };
+  this.importSchema = () => {
+      this.SchemaAPI.importFromServer(this.solrCollectionUrl).then(()=>{
+             this.imported = true;
+           $log.debug(SchemaAPI.solrTypes());
+            this.solrTypes = SchemaAPI.solrTypes();
+            this.solrFields = SchemaAPI.solrFields();
+           this.solrCopyFields =SchemaAPI.solrCopyFields();
       });
-      }
+
     };
+
+
+
   }
 }
   export {SchemaController};
