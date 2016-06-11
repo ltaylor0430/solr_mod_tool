@@ -84,6 +84,11 @@ grunt.initConfig({
 
         webpack: webpackConfig,
         publicPath:"/",
+        proxy: {'/build/*' : {
+                target:'http://localhost:3000',
+                secure:false
+               }
+       },
         contentBase: path.join(__dirname,paths.dest),
         port:9001
       },

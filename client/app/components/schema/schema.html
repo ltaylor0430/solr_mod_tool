@@ -8,8 +8,8 @@
           <li>Option 2, Import the data by loading the schema.xml. preferably choose option 1.</li>
         </ul>
         <label>Click here to load solr schema.xml file</label>
-        <form  enctype="multipart/form-data" method="post" action="{{formAction}}">
-        <input type="file" name="xmlschema" size="0"/>
+        <form  ng-submit="vm.loadFromFile($event)" enctype="multipart/form-data" method="post">
+        <input type="file" ng-model="vm.xmlFile" name="xmlschema" size="0"/>
         <input class="button" type="submit" value="Load"/>
         </form>
       </section>

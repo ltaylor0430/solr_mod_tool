@@ -1,5 +1,5 @@
 import _ from 'lodash';
-const schemaAPI= ($http,$log) => {
+const schemaAPI= ($http,$log, API) => {
     "use strict";
     let existingSchema = {};
     let schema =  undefined;
@@ -77,19 +77,50 @@ const schemaAPI= ($http,$log) => {
            return getSchema();
         });
     };
+  
+  const loadXmlFile = (formData) => {
+    let config = {
+      headers:{ 'Content-Type': undefined},
+      transformRequest : (data,headersGetter) => {
+        let formData = new FormData();
+        angular.forEach(data, (value,key) => {
+                            formData.append(key, value);
+                        });
 
+                        var headers = headersGetter();
+                      //  delete headers['Content-Type'];
+
+                        return formData;
+      }
+    };
+    var fd = {xmlschema: formData};
+    $log.debug('form data: ');
+    $log.debug(fd);
+    return $http.post('/build/parseXML/',fd,config).then(({data}) => {
+      $log.debug(data);
+           setSchema(data.schema);
+           return getSchema();
+        });
+  };
 
    const importFromServer = (solrCollectionUrl) => {
             $log.debug('importing schema');
             return importConfiguration(solrCollectionUrl).then(() => {
-            $log.debug(existingSchema);
-            solrFields = _.concat(solrFields,angular.copy(existingSchema.fields));
-            $log.debug(solrFields);
-            solrTypes = _.concat(solrTypes,angular.copy(existingSchema.fieldTypes));
-            solrCopyFields = _.concat(solrCopyFields,angular.copy(existingSchema.copyFields));
-
-
-
+                $log.debug(existingSchema);
+                solrFields = _.concat(solrFields,angular.copy(existingSchema.fields));
+                $log.debug(solrFields);
+                solrTypes = _.concat(solrTypes,angular.copy(existingSchema.fieldTypes));
+                solrCopyFields = _.concat(solrCopyFields,angular.copy(existingSchema.copyFields));
+      });
+    };
+ const importFromFile = (formFile) => {
+            $log.debug('importing schema');
+            return loadXmlFile(formFile).then(() => {
+                $log.debug(existingSchema);
+                solrFields = _.concat(solrFields,angular.copy(existingSchema.field));
+                $log.debug(solrFields);
+                solrTypes = _.concat(solrTypes,angular.copy(existingSchema.fieldType));
+                solrCopyFields = _.concat(solrCopyFields,angular.copy(existingSchema.copyField));
       });
     };
 
@@ -160,7 +191,8 @@ const exportSchemaChanges = () =>{
               removeFieldType,
               removeCopyField,
               exportSchemaChanges,
-              importFromServer};
+              importFromServer,
+              importFromFile};
   };
 
 //for minification

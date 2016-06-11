@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "npm test",
-    "start": "grunt"
+    "client": "grunt",
+    "server": "node server/server.js",
+    "start": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Lawrence Taylor",
   "license": "ISC",
@@ -13,16 +15,24 @@
     "angular": "^1.5.6",
     "angular-ui-bootstrap": "^1.0",
     "angular-ui-router": "^0.2.15",
+    "body-parser": "^1.15.1",
     "bootstrap": "^3.3.6",
+    "express": "^4.13.4",
+    "express-error-handler": "^1.1.0",
     "font-awesome": "^4.6.3",
+    "http": "0.0.0",
     "jeet": "^6.1.2",
     "lodash": "^4.13.1",
+    "method-override": "^2.3.6",
+    "morgan": "^1.7.0",
+    "multer": "^1.1.0",
     "normalize.css": "^3.0.3",
     "rupture": "^0.6.1"
   },
   "devDependencies": {
     "babel-loader": "^5.3.2",
     "browser-sync": "^2.7.13",
+    "concurrently": "^2.1.0",
     "connect-livereload": "^0.5.3",
     "css-loader": "~0.6.6",
     "file-loader": "~0.5.0",
@@ -34,6 +44,7 @@
     "grunt-todo": "^0.5.0",
     "grunt-webpack": "^1.0.11",
     "html-loader": "^0.4.3",
+    "http-proxy": "^1.13.3",
     "json-loader": "^0.5.4",
     "markdown-loader": "^0.1.7",
     "matchdep": "~0.3.0",
