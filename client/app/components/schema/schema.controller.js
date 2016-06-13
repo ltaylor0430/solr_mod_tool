@@ -8,6 +8,7 @@ import _ from 'lodash';
         this.solrCollectionUrl = 'http://solr1:8983/solr/gateway_collection';
         this.schema =  undefined;
         this.isAddNewFieldType = false;
+        this.fileName ='foo.html';
         this.inital = {fieldName: ''};
         this.SchemaAPI = SchemaAPI;
         this.formAction = API.url + '/parseXML';
@@ -15,6 +16,7 @@ import _ from 'lodash';
         this.hasNew = () => {
             return (this.isAddNewFieldType ? '!!' : '!');
         };
+     
     //add Field
      this.addField = function(fieldDef) {
       this.SchemaAPI.addField(fieldDef);
@@ -67,8 +69,20 @@ import _ from 'lodash';
             this.solrTypes = SchemaAPI.solrTypes();
             this.solrFields = SchemaAPI.solrFields();
            this.solrCopyFields =SchemaAPI.solrCopyFields();
+           this.saveToLocalStorage();
       });
   }
+  this.saveToLocalStorage = () => {
+    localStorage.setItem('schema',JSON.stringify(this.SchemaAPI.getSchema()));
+
+  };
+  this.retrieveFromLocalStorage = () => {
+   let currentSchema =  localStorage.getItem('schema');
+   $log.debug(currentSchema);
+   SchemaAPI.setSchema(JSON.parse(currentSchema));
+
+  };
+  
   this.importSchema = () => {
       this.SchemaAPI.importFromServer(this.solrCollectionUrl).then(()=>{
              this.imported = true;
@@ -76,13 +90,16 @@ import _ from 'lodash';
             this.solrTypes = SchemaAPI.solrTypes();
             this.solrFields = SchemaAPI.solrFields();
            this.solrCopyFields =SchemaAPI.solrCopyFields();
+           this.saveToLocalStorage();
       });
 
     };
 
 
-
+ this.retrieveFromLocalStorage();
   }
+ 
 }
+
   export {SchemaController};
 

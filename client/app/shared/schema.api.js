@@ -2,12 +2,12 @@ import _ from 'lodash';
 const schemaAPI= ($http,$log, API) => {
     "use strict";
     let existingSchema = {};
-    let schema =  undefined;
+    let schema =  {};
     let solrTypes = [];
     let solrFields = [];
    let solrCopyFields =[];
    const getSolrType = () => {
-    return solrTypes;
+     return solrTypes;
    };
       const getSolrFields = () => {
     return solrFields;
@@ -20,10 +20,15 @@ const schemaAPI= ($http,$log, API) => {
       };
    const setSchema = (curSchema) => {
       existingSchema = curSchema;
+      schema = existingSchema;
+      saveToLocalStorage();
    };
   const addFieldType = (fieldType) => {
      fieldType.isNew = true;
-     solrTypes.push(angular.copy(fieldType));
+     getSolrType().push(angular.copy(fieldType));
+     
+    //update localStorage;
+     saveToLocalStorage();
       //clear
       fieldType = {};
     };
@@ -58,7 +63,7 @@ const schemaAPI= ($http,$log, API) => {
       fieldType.remove = true;
       //remove field from schema
       if (angular.isDefined(fieldType.isNew)) {
-        solrTypes.splice($index,1);
+        getSolrType().splice($index,1);
       }
 
     };
@@ -66,7 +71,7 @@ const schemaAPI= ($http,$log, API) => {
    const  removeCopyField = (copyField,$index) => {
       copyField.remove = true;
        if (angular.isDefined(copyField.isNew)) {
-        solrTypes.splice($index,1);
+        solrCopyFields.splice($index,1);
       }
 
     };
@@ -109,7 +114,7 @@ const schemaAPI= ($http,$log, API) => {
                 $log.debug(existingSchema);
                 solrFields = _.concat(solrFields,angular.copy(existingSchema.fields));
                 $log.debug(solrFields);
-                solrTypes = _.concat(solrTypes,angular.copy(existingSchema.fieldTypes));
+                //solrTypes = _.concat(solrTypes,angular.copy(existingSchema.fieldTypes));
                 solrCopyFields = _.concat(solrCopyFields,angular.copy(existingSchema.copyFields));
       });
     };
@@ -150,6 +155,36 @@ const schemaAPI= ($http,$log, API) => {
     //The actual json has duplicate keys which is technically invalid.  need to  massage the output to
     //allow this to happen
     //
+//using local Storage to persist changes.
+ const saveToLocalStorage = () => {
+    localStorage.setItem('modified_schema',JSON.stringify(schema));
+
+  };
+  const loadFromLocalStorage = () => {
+    localStorage.getItem('modified_schema');
+     let modSchema =  localStorage.getItem('modified_schema');
+      if (modSchema){
+         let obj_schema = JSON.parse(modSchema);
+      
+         setSchema(obj_schema);
+       if(getSchema().field) {
+         solrFields = getSchema().field;
+       } else {
+         solrFields = getSchema().fields;
+       }
+        if(getSchema().fieldType) {
+         solrTypes = getSchema().fieldType;
+       } else {
+         solrTypes = getSchema().fieldTypes;
+       }
+       if(getSchema().copyField) {
+         solrFields = getSchema().copyField;
+       } else {
+         solrFields = getSchema().copyFields;
+       }
+      }
+    $log.debug(solrTypes);
+  };
 const exportSchemaChanges = () =>{
 
      let output = '';
@@ -192,7 +227,8 @@ const exportSchemaChanges = () =>{
               removeCopyField,
               exportSchemaChanges,
               importFromServer,
-              importFromFile};
+              importFromFile,
+              loadFromLocalStorage};
   };
 
 //for minification

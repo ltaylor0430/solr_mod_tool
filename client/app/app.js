@@ -4,8 +4,13 @@
 // thanks the the styles loader it gets added as a
 // <style> tag in the head by default but can be changed
 import 'normalize.css';
+
 import 'font-awesome/css/font-awesome.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'material-design-lite/material';
+
+import 'material-design-lite/dist/material.amber-light_blue.min.css';
+import 'material-design-icons/iconfont/material-icons.css';
+
 import './app.styl';
 
 // the angular libs are just common js
@@ -22,11 +27,19 @@ import modal from 'angular-ui-bootstrap/src/modal';
 import {appDirective} from './app.directive';
 import {schema} from './components/schema/schema';
 import {shared} from './shared/shared';
+import {fieldtypes} from './components/fieldtypes/fieldtypes';
 angular.module('app',
                [uiRouter,
                 modal,
                 schema.name,
+                fieldtypes.name,
                 shared.name
 
               ])
+.run(
+  function($rootScope,SchemaAPI,$log) {
+    $rootScope.$on('$stateChangeStart',(event,toState,toParam,fromState,fromParams) => {
+          SchemaAPI.loadFromLocalStorage();   
+  });
+})
 .directive('app', appDirective);

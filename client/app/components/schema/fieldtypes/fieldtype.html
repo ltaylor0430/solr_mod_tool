@@ -1,12 +1,17 @@
-<div class="editTypeTemplate">
+<div  class="fem-card mdl-card mdl-shadow--2dp">
+     <div class="mdl-card__supporting-text">
 <form auto-complete="false" no-validate>
-  <label for="name">Name</label>
-  <input type="text" autocomplete="off" name="name" ng-model="vm.fieldType.name" placeholder="name"/>
-  <label for="class">Class</label>
-  <input type="text" autocomplete="off"  name="class" ng-model="vm.fieldType.class"placeholder="class"/>
-  <label for="tokenizer">Tokenizer:</label>
-  <div class="">
-  <span ng-bind="analyzer.tokenizer.class"/>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input  class="mdl-textfield__input" type="text" autocomplete="off" name="name" ng-model="vm.fieldType.name" />
+    <label class="mdl-textfield__label" for="name">Name</label>
+  </div>
+   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input  class="mdl-textfield__input" type="text" autocomplete="off"  name="class" ng-model="vm.fieldType.class"/>
+    <label class="mdl-textfield__label" for="class">Class</label>
+   </div>
+   <div class="">
+     <label class="mdl-textfield__label" for="tokenizer">Tokenizer:</label>
+      <span ng-bind="analyzer.tokenizer.class"/>
    </div>
   <div class="">
     <div ng-if="fieldTypes.analyzer.indexAnalyzer">
@@ -30,7 +35,7 @@
   </div>
 
   </div>
-  <button ng-click="vm.showAnalyzer()" class="btn-default">Add/Change Analyzer</button>
+  <button ng-click="vm.showAnalyzer()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">Add/Change Analyzer</button>
 
   <p style="font-size:16px;font-weight:bold">Optional Parameters</p>
   <div class="optParams" ng-repeat="item in optParams track by $index">
@@ -40,7 +45,9 @@
   <div name="form2" no-validate >
     <params binding-to="vm.params"><params>
   </div>
-  <p style="text-align:right;clear:both;margin-top:10px"><button ng-click="vm.addFieldType()">Add</button></p>
-
+<label >
+   <button class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored" ng-click="vm.addFieldType()"> <i class="material-icons">add</i></button>
+</label>
 </form>
+</div>
 </div>

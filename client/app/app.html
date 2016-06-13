@@ -1,19 +1,23 @@
-<div id="app">
-  <header>
-    <nav>
-      <div class="logo">
-        <span ui-sref="home">
-          <a ui-sref="home">LT Tool's</a>
-        </span>
-      </div>
-      <ul class="links">
-        <li>
-        <a ui-sref="admin">admin</a>
-        </li>
-      </ul>
-    </nav>
+<div id="app" class="content mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">Solr Schema Tool</span>
+            <div class="mdl-layout-spacer"></div>
+ 
+     <nav class="mdl-navigation">
+ 
+        <a class="mdl-navigation__link" ui-sref="schema">Import</a>
+
+        <a class="mdl-navigation__link" ui-sref="fieldType">Types</a>
+        <a class="mdl-navigation__link" ui-sref="fields">Fields</a>
+        <a class="mdl-navigation__link" ui-sref="dynamicfields">Dynamic Fields</a>
+        <a class="mdl-navigation__link" ui-sref="copyfields">Copy Fields</a>
+         
+      </nav>
+    </div>
+
   </header>
-  <main>
+  <main class="mdl-layout__content page-content">
     <div ui-view></div>
   </main>
   <footer></footer>

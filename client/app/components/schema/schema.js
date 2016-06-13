@@ -12,7 +12,7 @@ export const schema = angular.module('schema', [])
   $stateProvider.state('schema', {
     url: '/',
     template: '<schema></schema>',
-  })
+  });/*
  .state('schema.addFieldType',{
     url:'/add/fieldType',
     views: {
@@ -25,7 +25,7 @@ export const schema = angular.module('schema', [])
     url:'/edit/fieldType/:id',
     template:'<editfieldtype></editfieldtype>'
 
-  });
+  });*/
 })
 .directive('schema', schemaDirective)
 .directive('editfieldtype',fieldTypeDirective);

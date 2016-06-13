@@ -1,103 +1,117 @@
-
 <div class="schemaUI">
-      <div class="title"><h1>Schema Update Tool</h1></div>
-      <section class="load">
+   <section class="mdl-grid">
+    <div class="fem-card mdl-card mdl-shadow--2dp  mdl-cell--12-col">
+      <div class="mdl-grid">
+        <div class="mdl-cell  mdl-cell--6-col">
+          <div class="fem-card mdl-card">
+            <div class="mdl-card__title">
+              <h4>Import Option 1</h4>
+            </div>
+            <div class="mdl-card__supporting-text">
+              <ul>
+                <li>Import the data by loading the schema.xml.</li>
+              </ul>
+              <form ng-submit="vm.loadFromFile($event)" enctype="multipart/form-data" method="post">
+                <div class="file_input_div">
+                  <div class="file_input">
+                    <label class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored">
+                          <i class="material-icons">file_upload</i>
+                          <input id="file_input_file" class="none" type="file" ng-model="vm.fileName" name="xmlschema" />
+                        </label>
+                  </div>
+                  <div id="file_input_text_div" class="mdl-textfield mdl-js-textfield">
+                    <input ng-value="vm.fileName" class="file_input_text mdl-textfield__input" type="text" disabled readonly id="file_input_text"
+                    />
+                    <label class="mdl-textfield__label" for="file_input_text"></label>
+                  </div>
+                </div>
+                <input class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" type="submit" value="Load"
+                />
 
-        <span>You have two options to import a schema. </span>
-          <ul><li>Option 1, Load the schema using the schema API by entering in your solr collection url.</li>
-          <li>Option 2, Import the data by loading the schema.xml. preferably choose option 1.</li>
-        </ul>
-        <label>Click here to load solr schema.xml file</label>
-        <form  ng-submit="vm.loadFromFile($event)" enctype="multipart/form-data" method="post">
-        <input type="file" ng-model="vm.xmlFile" name="xmlschema" size="0"/>
-        <input class="button" type="submit" value="Load"/>
-        </form>
-      </section>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="mdl-cell mdl-cell--6-col">
+          <div class="fem-card mdl-card">
+            <div class="mdl-card__title">
+              <h4>Import Option 2</h4>
+            </div>
+            <div class="mdl-card__supporting-text">
+              <ul>
+                <li>Import by entering in your solr collection url.</li>
 
-  <section class="solrUrl">
-        <h1>Collection URL</h1>
-        <input type="text" name="solrCollectionUrl"  required ng-model="vm.solrCollectionUrl"/>
-        <label>Click here to import solr schema from server</label>
-        <!--TODO: load a schema.xml -->
-        <button ng-click="vm.importSchema()">Import</button>
-        <span ng-show="vm.imported">Successfully, imported data.</span>
-  </section>
-
-  <section ng-show ="vm.imported" class="solrTypes">
-    <h2>Field Types</h2>
-    <div ui-view="addFieldType"></div>
-     <button ng-click="vm.newFieldType()">Add New Type</button>
-    <button ng-click="vm.isAddNewFieldType = !vm.isAddNewFieldType">Show New</button>
-    <br/>
-
-     <div  ng-show=" vm.solrTypes.length> 0"  class="itemContainer">
-       <div class="items" ng-repeat="item in vm.solrTypes  | filter:{ isNew: vm.hasNew()} track by $index">
-         <div class="itemDescription" style="">
-            <span ng-class="{'newItem' : item.isNew }" ng-bind="item.name"></span>
-         </div>
-          <button class="edit"><i class="fa fa-pencil"></i></button>
-         <button class="destroy" ng-click="vm.removeFieldType(item,$index)"><i class="fa fa-times"></i></button>
-       </div>
+              </ul>
+              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" name="solrCollectionUrl" required ng-model="vm.solrCollectionUrl" />
+                <label class="mdl-textfield__label" for="solrCollectionUrl">Import from server</label>
+              </div>
+              <button class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" ng-click="vm.importSchema()">Import</button>
+              <span ng-show="vm.imported">Successfully, imported data.</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
   </section>
 
-
-  <section class="solrfields">
+ <!--
+  <section class="solrfields ">
     <h2>Fields</h2>
-      <form>
-        <label for="fieldName">Field Name</label>
-      <input type="text" autocomplete="off" name="fieldName" ng-model="fieldDef.name" />
-        <label for="fieldName">Field Type</label>
-      <input type="text" autocomplete="off" name="fieldType" ng-model="fieldDef.type" />
-      <button ng-click="vm.addField(fieldDef)">Add</button>
+    <form>
+      <label for="fieldName ">Field Name</label>
+      <input type="text " autocomplete="off " name="fieldName " ng-model="fieldDef.name " />
+      <label for="fieldName ">Field Type</label>
+      <input type="text " autocomplete="off " name="fieldType " ng-model="fieldDef.type " />
+      <button ng-click="vm.addField(fieldDef) ">Add</button>
 
     </form>
     <div ng-show=" vm.solrFields.length> 0" class="itemContainer">
-    <div  class="items" ng-repeat="item in vm.solrFields track by $index">
-    <div class="itemDescription" style="">
-      <span ng-class="{'newItem' : item.isNew }" ng-bind="item.name"></span>
+      <div class="items" ng-repeat="item in vm.solrFields track by $index">
+        <div class="itemDescription" style="">
+          <span ng-class="{'newItem' : item.isNew }" ng-bind="item.name"></span>
+        </div>
+        <button class="edit"><i class="fa fa-pencil"></i></button>
+        <button class="destroy" ng-click="vm.removeField(item,$index)"><i class="fa fa-times"></i></button>
       </div>
-      <button class="edit"><i class="fa fa-pencil"></i></button>
-      <button class="destroy" ng-click="vm.removeField(item,$index)"><i class="fa fa-times"></i></button>
-    </div>
     </div>
   </section>
 
   <section class="solrCopyField">
     <h2>Copy Fields</h2>
-      <form>
-        <label for="fieldName">Copy Destination</label>
+    <form>
+      <label for="fieldName">Copy Destination</label>
       <input type="text" autocomplete="off" name="fieldName" ng-model="cpItems.dest" />
-        <label for="fieldName">Copy Source</label>
+      <label for="fieldName">Copy Source</label>
       <input type="text" autocomplete="off" name="fieldType" ng-model="cpItems.source" />
       <button ng-click="vm.addCopyField(cpItems)">Add</button>
 
     </form>
-    <div  ng-show=" vm.solrCopyFields.length > 0" class="itemContainer">
-    <div  class="items" ng-repeat="item in vm.solrCopyFields track by $index">
-    <div class="itemDescription">
-        <ul>
+    <div ng-show=" vm.solrCopyFields.length > 0" class="itemContainer">
+      <div class="items" ng-repeat="item in vm.solrCopyFields track by $index">
+        <div class="itemDescription">
+          <ul>
             <li>Destination: <span ng-class="{'newItem' : item.isNew }" ng-bind="item.dest"></span></li>
             <li>Source: {{item.source}} </li>
-            <li>      <button class="edit"><i class="fa fa-pencil"></i></button>
-          <button class="destroy" ng-click="vm.removeCopyField(item,$index)"><i class="fa fa-times"></i></button>
-          </li>
+            <li> <button class="edit"><i class="fa fa-pencil"></i></button>
+              <button class="destroy" ng-click="vm.removeCopyField(item,$index)"><i class="fa fa-times"></i></button>
+            </li>
           </ul>
+        </div>
       </div>
     </div>
-    </div>
-</section>
+  </section>
 
-
+-->
   <div class="newChanges">
-  <div class="itemContainer">
-  <button ng-click="vm.export()">Export</button>
+    <div class="itemContainer">
+      <button class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+       ng-click="vm.export()">Export</button>
 
-  <code style="clear:both;background:white;padding:10px">
+      <code style="clear:both;background:white;">
         {{vm.schemaChanges}}
         </code>
-  </div>
+    </div>
   </div>
 
 </div>
