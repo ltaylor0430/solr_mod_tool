@@ -16,7 +16,7 @@ import _ from 'lodash';
         this.hasNew = () => {
             return (this.isAddNewFieldType ? '!!' : '!');
         };
-     
+
     //add Field
      this.addField = function(fieldDef) {
       this.SchemaAPI.addField(fieldDef);
@@ -33,10 +33,7 @@ import _ from 'lodash';
     this.addParam = () => {
       $log.debug('wrong param function');
     };
-   this.addFieldType = function(fieldType) {
-       this.SchemaAPI.addFieldType(fieldType);
 
-    };
      //add Copy Field
    this.addCopyField = function(cpField) {
       this.SchemaAPI.addCopyField(cpField);
@@ -51,9 +48,7 @@ import _ from 'lodash';
       }
 */
     };
- this.removeFieldType = function(fieldType, $index) {
-     this.SchemaAPI.removeFieldType(fieldType, $index);
-    };
+
  this.removeCopyField = function(copyField,$index) {
         this.SchemaAPI.removeCopyField(copyField, $index);
     };
@@ -71,18 +66,15 @@ import _ from 'lodash';
            this.solrCopyFields =SchemaAPI.solrCopyFields();
            this.saveToLocalStorage();
       });
-  }
-  this.saveToLocalStorage = () => {
-    localStorage.setItem('schema',JSON.stringify(this.SchemaAPI.getSchema()));
-
   };
+
   this.retrieveFromLocalStorage = () => {
    let currentSchema =  localStorage.getItem('schema');
    $log.debug(currentSchema);
    SchemaAPI.setSchema(JSON.parse(currentSchema));
 
   };
-  
+
   this.importSchema = () => {
       this.SchemaAPI.importFromServer(this.solrCollectionUrl).then(()=>{
              this.imported = true;
@@ -98,7 +90,7 @@ import _ from 'lodash';
 
  this.retrieveFromLocalStorage();
   }
- 
+
 }
 
   export {SchemaController};

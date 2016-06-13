@@ -1,4 +1,4 @@
-import analyzerTemplate from './templates/analyzer.tpl.html';
+
 import _ from 'lodash';
 
 class FieldTypesController {
@@ -9,13 +9,13 @@ class FieldTypesController {
     this.modal = undefined;
     this.SchemaAPI = SchemaAPI;
     $log.debug($state);
-    this.solrTypes = this.SchemaAPI.solrTypes();  
+    this.solrTypes = this.SchemaAPI.solrTypes();
     $log.debug(this.solrTypes);
     const self = this;
     this.hasNew = () => {
             return (this.isAddNewFieldType ? '!!' : '!');
         };
-    this.showAnalyzer = () => {
+    /*this.showAnalyzer = () => {
       const opts = {
                   template: analyzerTemplate,
                   controller: function($scope,$log, $q, $uibModalInstance) {
@@ -53,21 +53,35 @@ class FieldTypesController {
       this.modal = $uibModal.open(opts);
 
     };
-  this.reset = () => {
-        fieldType = {params:[]};
+*/
+     this.reset = () => {
         this.isAddNewFieldType = !this.isAddNewFieldType;
 
       };
+
     this.addFieldType = () => {
       //add field type, but 1st add all optional params
       //TODO: reference fieldType as the destination object in directive
       _(this.params)
-          .forEach((item) => {
-              _.extend(this.fieldType,item);
+          .forEach(({item}) => {
+            $log.debug(item);
+            this.fieldType['' +item.name] = item.value;
+            $log.debug(this.fieldType);
+//              _.extend(this.fieldType,item);
       });
       this.SchemaAPI.addFieldType( this.fieldType);
       $log.debug(this.fieldType);
        $state.go('^');
+
+    };
+
+    this.removeFieldType = (fieldType, $index) => {
+      $log.debug('removing field type :' + $index);
+     this.SchemaAPI.removeFieldType(fieldType, $index);
+    };
+    this.undoItemChanges = (item, $index) => {
+        this.SchemaAPI.undoFieldTypeChanges(item, $index);
+
 
     };
 

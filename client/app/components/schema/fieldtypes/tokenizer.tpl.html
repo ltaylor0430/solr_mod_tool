@@ -7,8 +7,13 @@
     <input name="tokenizerType" ngModel="vm.tokenizerType" value="indexquery" type="radio"  checked>Index &amp; Query</label>
     <label><input  ng-model="vm.tokenizerType" value="separate"  name="tokenizerType" type="radio" />Separate</label>
 </div>
-<h1>Tokenizer</h1>
-    <input type="text" autocomplete="off"  ng-model="vm.tokenizerClass" name="class" placeholder="Tokenizer Class"/>
+<h5>Tokenizer</h5>
+ <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input  class="mdl-textfield__input" type="text" autocomplete="off" name="tokenizerClass" ng-model="vm.tokenizerClass" />
+              <label class="mdl-textfield__label" for="tokenizerClass">Tokenizer Class</label>
+            </div>
+
+
     <!-- Tokenizer params -->
     Tokenizer Parameters
    <params binding-to="vm.tokenizerParams"></params>
