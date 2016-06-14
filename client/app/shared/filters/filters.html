@@ -1,17 +1,31 @@
 
 <section class="filter">
+<hr/>
 <h4>Filters</h4>
-<label for="class">Filter Class</label>
-<input type="text" name="class" ng-model="vm.filter.class"/>
+<div  class="mdl_grid items">
+ <div class="mdl-cell mdl-cell--12-col">
+        <div class="fem-card mdl-card ">
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input  class="mdl-textfield__input" type="text" autocomplete="off"  name="filter_class" ng-model="vm.filter.class"/>
+    <label class="mdl-textfield__label" for="filter_class">Filter Class</label>
+   </div>
+  <div><span>Type&nbsp;</span>
+<input type="radio" name="charFilter"/><label>Char Filter</label>
+<input type="radio" name="standardFilter"/><label>Standard Filter</label>
+</div>
 <params id="params" binding-to="vm.filterParam"></params>
-<div class="clearfix"></div>
-  <button ng-click="vm.addFilter()" ><i class="fa fa-plus"></i>Add Filter</button>
+
+     <button  ng-click="vm.addFilter" class="mdl-button   mdl-js-button mdl-js-ripple-effect ">Add Filter</button>
+
+  <hr/>
 <section class="organizeFilter">
-<h3>Organized Filters</h3>
+<h4>Organized Filters</h4>
 <ul ng-repeat="item in vm.filters">
   <li>{{item.class}}</li>
 </ul>
 
 </section>
-
+</div>
+</div>
+</div>
 </section>

@@ -10,7 +10,7 @@ const schemaAPI= ($http,$log, API) => {
      return getSchema().fieldTypes;
    };
       const getSolrFields = () => {
-    return solrFields;
+    return getSchema().fields;
    };
       const getSolrCopyFields = () => {
     return solrCopyFields;

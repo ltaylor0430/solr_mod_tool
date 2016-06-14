@@ -1,6 +1,7 @@
 class ParamsController {
   constructor($scope) {
     this.params = $scope.bindingTo;
+    this.toggleParams = false;
     this.addParam = (param) =>{
       const newParam = {name: param.name,
                                        value: param.value};
@@ -15,7 +16,9 @@ class ParamsController {
     this.clearParams = () => {
         this.params = [];
     };
-
+    this.removeParam = (item,$index) => {
+      this.params.splice($index,1);
+    };
   }
 }
 export {ParamsController};

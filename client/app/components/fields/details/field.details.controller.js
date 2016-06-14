@@ -1,7 +1,7 @@
 import analyzerTemplate from './tokenizer.tpl.html';
 import _ from 'lodash';
 //Item Detail
-class FieldTypeDetailsController {
+class FieldsDetailsController {
  constructor($scope,$log,$state, $uibModal,SchemaAPI) {
    this.fieldType  ={};
     this.editMode =$scope.editMode;
@@ -14,32 +14,22 @@ class FieldTypeDetailsController {
     this.tokenizerParams=[];
     this.analyzer = {};
     this.tokenizer = {};
+    this.solrTypes=this.SchemaAPI.solrTypes();
+    this.selectedType = '';
     const self = this;
 
     if (this.editMode){
-      let selectedItem = SchemaAPI.solrTypes()[$state.params.index];
+      let selectedItem = SchemaAPI.solrFields()[$state.params.index];
 
       let ex_params=_.chain(selectedItem)
-                    .omit(['name','class','analyzer','indexAnalyzer','queryAnalyzer'])
+                    .omit(['name','class','type','indexAnalyzer','queryAnalyzer'])
                     .map((result,v,key) => { return {name:v, value:result}; })
                     .value();
       $log.debug(ex_params);
       this.params = ex_params;
+      this.selectedType =selectedItem.type;
       this.fieldType ={name: selectedItem.name,
                                  class: selectedItem.class};
-
-      if (selectedItem.analyzer)
-      {
-        //index query
-        this.tokenizerType = 'indexquery';
-        this.tokenizer = selectedItem.analyzer.tokenizer;
-        this.filters = selectedItem.analyzer.filters;
-      } else {
-           this.tokenizerType = 'separate';
-           this.tokenizer.index = selectedItem.indexAnalyzer;
-           this.tokenizer.query = selectedItem.queryAnalyzer;
-
-      }
 
 
     }
@@ -83,7 +73,7 @@ class FieldTypeDetailsController {
     };
      this.setFieldType = (ft) => {
         this.fieldType = ft;
-        this.params = _(ft).without
+
     };
   this.reset = () => {
         fieldType = {params:[]};
@@ -119,5 +109,5 @@ class FieldTypeDetailsController {
 }
 
 }
-  export {FieldTypeDetailsController};
+  export {FieldsDetailsController};
 

@@ -4,19 +4,24 @@ import _ from 'lodash';
 
   // bind to this and not $scope
   // because of controllerAs.
-    constructor($log,$state,API, SchemaAPI) {
+    constructor($scope,$log,$state,API, SchemaAPI) {
         this.solrCollectionUrl = 'http://solr1:8983/solr/gateway_collection';
         this.schema =  undefined;
         this.isAddNewFieldType = false;
-        this.fileName ='foo.html';
+        this.fileName ='';
         this.inital = {fieldName: ''};
         this.SchemaAPI = SchemaAPI;
         this.formAction = API.url + '/parseXML';
         this.imported = false;
+        $scope.uploadOnChange = (event) => {
+           // this.xmlFile = event.target[0].files[0];
+        };
         this.hasNew = () => {
             return (this.isAddNewFieldType ? '!!' : '!');
         };
-
+        this.fileSelected = () => {
+            $log.debug(this);
+        };
     //add Field
      this.addField = function(fieldDef) {
       this.SchemaAPI.addField(fieldDef);

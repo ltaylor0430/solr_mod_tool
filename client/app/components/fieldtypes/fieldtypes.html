@@ -16,7 +16,6 @@
                 </div>
 
             <div class="mdl-card__menu ">
-              <button ng-click="vm.editItem(item)" ng-disabled="item.remove" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect ">     <i class="material-icons">edit</i></button></button>
               <button  ng-disabled="item.remove" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect " ng-click="vm.removeFieldType(item,$index) ">
                 <i class="material-icons">close</i></button>
                   <button  ng-show="item.remove" ng-click="vm.undoItemChanges(item, $index)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect " >
@@ -31,7 +30,7 @@
         </div>
 
       </div>
-      <div class="item-detail mdl-cell mdl-cell--6-col">
+      <div class="item-detail mdl-cell mdl-cell--4-col">
              <div ui-view="itemDetailsView"></div>
       </div>
 

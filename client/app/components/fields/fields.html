@@ -1,22 +1,22 @@
- <section  class="solrTypes">
-    <h4>Field Types</h4>
-    <button class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-click="vm.isAddNewFieldType = !vm.isAddNewFieldType">Filter</button>
+ <section  class="solrFields">
+    <h4>Fields</h4>
+    <button class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-click="vm.isAddNewfield = !vm.isAddNewfield">Filter</button>
     <br/>
     <div class="mdl-grid items">
       <div class="mdl-cell mdl-cell--6-col">
-        <div ng-show=" vm.solrTypes.length> 0">
-          <div class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrTypes | filter:{ isNew: vm.hasNew()}) track by $index">
+        <div ng-show=" vm.solrFields.length> 0">
+          <div ng-click="vm.editType(item,$index)" class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrFields | filter:{ isNew: vm.hasNew()}) track by $index">
             <div class="mdl-card__title">
               <s  class="removeItem" ng-bind="item.name" ng-if="item.remove"></s>
               <h2 ng-if="!item.remove" ng-class="{ 'newItem' : item.isNew,'removeItem' : item.remove,'editItem' : item.replace } " class="mdl-card__title-text" style=" ">
               {{item.name}}</h2>
             </div>
                 <div class="mdl-card__supporting-text">
-                Class: {{item.class}}
+                Type: {{item.type}}
                 </div>
 
             <div class="mdl-card__menu ">
-              <button ng-disabled="item.remove" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect ">     <i class="material-icons">edit</i></button></button>
+
               <button  ng-disabled="item.remove" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect " ng-click="vm.removeFieldType(item,$index) ">
                 <i class="material-icons">close</i></button>
                   <button  ng-show="item.remove" ng-click="vm.undoItemChanges(item, $index)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect " >
@@ -31,8 +31,8 @@
         </div>
 
       </div>
-      <div class="mdl-cell mdl-cell--6-col">
-             <editfieldtype></editfieldtype>
+      <div class="mdl-cell mdl-cell--4-col">
+              <div ui-view="itemDetailsView"></div>
       </div>
 
     </div>
