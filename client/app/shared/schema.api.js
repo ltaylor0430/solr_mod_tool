@@ -32,6 +32,15 @@ const schemaAPI= ($http,$log, API) => {
       //clear
       fieldType = {};
     };
+    const replaceFieldType = (fieldType) => {
+     fieldType.replace = true;
+     getSolrType().push(angular.copy(fieldType));
+
+    //update localStorage;
+     saveToLocalStorage();
+      //clear
+      fieldType = {};
+    };
         //add  Field
     const addField = (field)  =>{
      field.isNew = true;
@@ -253,6 +262,7 @@ const undoFieldTypeChanges = (fieldType, $index) => {
               addField,
               addFieldType,
               addCopyField,
+              replaceFieldType,
               removeField,
               removeFieldType,
               removeCopyField,

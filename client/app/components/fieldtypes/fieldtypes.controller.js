@@ -6,6 +6,7 @@ class FieldTypesController {
     this.fieldType = {};
     this.params = [];
     this.test = 'test!';
+    this.selectedItem = {};
     this.modal = undefined;
     this.SchemaAPI = SchemaAPI;
     $log.debug($state);
@@ -15,6 +16,13 @@ class FieldTypesController {
     this.hasNew = () => {
             return (this.isAddNewFieldType ? '!!' : '!');
         };
+    this.editType=(item,$index) => {
+      this.selectedItem = item;
+      
+      $log.debug('selected Item');
+      $state.go('fieldType.edit',{index:$index});
+      $log.debug(this.selectedItem);
+    };
     /*this.showAnalyzer = () => {
       const opts = {
                   template: analyzerTemplate,

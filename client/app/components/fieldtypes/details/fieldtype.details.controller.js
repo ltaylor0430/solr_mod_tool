@@ -2,8 +2,10 @@ import analyzerTemplate from './tokenizer.tpl.html';
 import _ from 'lodash';
 //Item Detail
 class FieldTypeDetailsController {
- constructor($log,$state, $uibModal,SchemaAPI) {
-    this.fieldType = {};
+ constructor($scope,$log,$state, $uibModal,SchemaAPI) {
+   this.fieldType  ={};
+    this.editMode =$scope.editMode;
+ 
     this.params = [];
     this.test = 'test!';
     this.modal = undefined;
@@ -11,6 +13,19 @@ class FieldTypeDetailsController {
     this.filters = [];
     this.tokenizerParams=[];
     const self = this;
+    if (this.editMode){
+      let selectedItem = SchemaAPI.solrTypes()[$state.params.index];
+   
+      let ex_params=_.chain(selectedItem)
+                    .omit(['name','class','analyzer'])
+                    .map((result,v,key) => { return {name:v, value:result} })
+                    .value();
+      $log.debug(ex_params);
+      this.params = ex_params;
+      this.fieldType =selectedItem;
+      
+
+    }
     this.showAnalyzer = () => {
       const opts = {
                   template: analyzerTemplate,
@@ -68,12 +83,22 @@ class FieldTypeDetailsController {
              $log.debug(item);
             this.fieldType[item.name] = item.value;
       });
+      if (this.editMode) {
+         this.SchemaAPI.replaceFieldType( this.fieldType);
+     
+      } else {
       this.SchemaAPI.addFieldType( this.fieldType);
+      }
       $log.debug(this.fieldType);
-      this.fieldType = {};
-      this.params.length = 0;
+      $state.go('^.itemDetails');
     };
 
+    this.isFormDirty = () => {
+       return this.itemDetails.$dirty;
+    };
+    this.cancel = () => {
+      $state.go('^.itemDetails');
+    };
 }
 
 }

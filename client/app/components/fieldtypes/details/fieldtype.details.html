@@ -2,7 +2,7 @@
 <div class="mdl-card__title">  <h2 ng-if="!vm.editMode">Create Type</h2><h2 ng-if="vm.editMode">Edit Type</h2>
 </div>
      <div class="mdl-card__supporting-text">
-<form auto-complete="false" no-validate>
+<ng-form name="vm.itemDetails" auto-complete="false" no-validate>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input  class="mdl-textfield__input" type="text" autocomplete="off" name="name" ng-model="vm.fieldType.name" />
     <label class="mdl-textfield__label" for="name">Name</label>
@@ -63,12 +63,12 @@
       <div class="clearfix"></div>
       <filters binding-to="vm.filters"></filters>
     </div>
-<div class="moveRight">
+<div>
 <label >
-
-   <button class="image_input_button mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mdl-button--colored" ng-click="vm.addFieldType()"> <i class="material-icons">add</i></button>
+ <button ng-click="vm.cancel()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">CANCEL</button>
+ <button  ng-click="vm.addFieldType()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">SAVE</button>
 </label>
 </div>
-</form>
+</ng-form>
 </div>
 </div>
