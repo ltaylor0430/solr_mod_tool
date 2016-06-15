@@ -8,12 +8,32 @@
           <label class="mdl-textfield__label" for="name">Name</label>
         </div>
          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+
+        <mat-select selected-item="vm.selectedType" items="vm.solrTypes"></mat-select>
+        <!--
          <select  class="mdl-shadow--4dp" name="types" ng-model="vm.selectedType">
             <option ng-selected="vm.selectedType == item.name" ng-repeat ="item in vm.solrTypes"
              value="{{item.name}}">{{item.name}}</option>
          </select>
-
+  -->
          </div>
+         <div class="mdl-list commonParams">
+          <div class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">Indexed</span>
+          <mat-radio selected-item="vm.fieldType.indexed" value="true"/> True
+          <mat-radio selected-item="vm.fieldType.indexed" value="false" /> False
+         </div>
+         <div class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">Stored</span>
+          <mat-radio selected-item="vm.fieldType.stored" value="true"/> True
+          <mat-radio selected-item="vm.fieldType.stored" value="false" /> False
+         </div>
+         <div class="mdl-list__item">
+          <span class="mdl-list__item-primary-content">Multivalued</span>
+          <mat-radio selected-item="vm.fieldType.multiValued" value="true"/> True
+          <mat-radio selected-item="vm.fieldType.multiValued" value="false" /> False
+         </div>
+         <!--params -->
           <params binding-to="vm.params"></params>
         <br/>
         <hr/>

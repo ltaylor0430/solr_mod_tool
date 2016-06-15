@@ -3,7 +3,7 @@
     <button class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-click="vm.isAddNewFieldType = !vm.isAddNewFieldType">Filter</button>
     <br/>
     <div class="mdl-grid items">
-      <div class="mdl-cell mdl-cell--6-col">
+      <div class="mdl-cell mdl-cell--5-col">
         <div ng-show=" vm.solrTypes.length> 0">
           <div ng-click="vm.editType(item,$index)" class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrTypes | filter:{ isNew: vm.hasNew()}) track by $index">
             <div class="mdl-card__title">
@@ -24,13 +24,13 @@
           </div>
           <div class="fem-card mdl-card mdl-shadow--2dp" ng-hide="vm.filterdTypes.length">
                 <div class="mdl-card__title">
-              <h2  class="mdl-card__title-text" style=" ">No  New items to see!</h2>
+              <h2  class="mdl-card__title-text" style=" ">No items to see!</h2>
             </div>
           </div>
         </div>
 
       </div>
-      <div class="item-detail mdl-cell mdl-cell--4-col">
+      <div class="item-detail mdl-cell mdl-cell--7-col">
              <div ui-view="itemDetailsView"></div>
       </div>
 

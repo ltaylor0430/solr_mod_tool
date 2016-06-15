@@ -4,7 +4,10 @@ class FiltersController {
     this.filters = $scope.bindingTo || [];
     this.filterParam = [];
     this.filter = {};
-
+    this.filterType = 'standard';
+    this.test = () => {
+      $log.debug(this.filterType);
+    };
     this.addFilter = () =>{
       let newFilter = {};
       newFilter.class =this.filter.class;

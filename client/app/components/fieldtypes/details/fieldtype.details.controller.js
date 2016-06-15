@@ -3,17 +3,17 @@ import _ from 'lodash';
 //Item Detail
 class FieldTypeDetailsController {
  constructor($scope,$log,$state, $uibModal,SchemaAPI) {
-   this.fieldType  ={};
-    this.editMode =$scope.editMode;
-
-    this.params = [];
-    this.test = 'test!';
-    this.modal = undefined;
-    this.SchemaAPI = SchemaAPI;
-    this.filters = [];
-    this.tokenizerParams=[];
-    this.analyzer = {};
-    this.tokenizer = {};
+   this.fieldType               ={};
+    this.editMode             =$scope.editMode;
+    this.params                = [];
+    this.test                      = 'test!';
+    this.modal                  = undefined;
+    this.SchemaAPI          = SchemaAPI;
+    this.filters                   = [];
+    this.tokenizerParams =[];
+    this.analyzer              = {};
+    this.tokenizer             = {};
+    this.tokenizerType ='indexquery';
     const self = this;
 
     if (this.editMode){

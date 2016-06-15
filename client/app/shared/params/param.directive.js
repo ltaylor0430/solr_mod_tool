@@ -1,4 +1,4 @@
-
+import './params.styl';
 import {ParamsController as controller} from './params.controller';
 import template from './params.html';
 

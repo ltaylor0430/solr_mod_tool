@@ -10,8 +10,9 @@
     <label class="mdl-textfield__label" for="filter_class">Filter Class</label>
    </div>
   <div><span>Type&nbsp;</span>
-<input type="radio" name="charFilter"/><label>Char Filter</label>
-<input type="radio" name="standardFilter"/><label>Standard Filter</label>
+  <mat-radio  selected-Item ="vm.filterType" value="char"></mat-radio><label>Char Filter</label>
+   <mat-radio  selected-Item ="vm.filterType" value="standard"></mat-radio><label>Standard Filter</label>
+
 </div>
 <params id="params" binding-to="vm.filterParam"></params>
 

@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "angular": "^1.5.6",
+    "angular-animate": "^1.5.6",
+    "angular-deep-blur": "^1.0.9",
     "angular-ui-bootstrap": "^1.0",
     "angular-ui-router": "^0.2.15",
     "body-parser": "^1.15.1",

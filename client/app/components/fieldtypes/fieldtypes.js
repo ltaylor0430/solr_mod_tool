@@ -12,9 +12,8 @@ export const fieldtypes = angular.module('solrTypes', [])
     url: '/types',
     abstract:true,
     views: {
-    '' : {template: `<field-types></field-types>`},
-    'itemDetailsView': {template:`<editfieldtype></editfieldtype>`}
-  
+    '' : {template: `<field-types></field-types>`}
+
     }
   })
  .state('fieldType.itemDetails',{
@@ -22,8 +21,8 @@ export const fieldtypes = angular.module('solrTypes', [])
     views : {
     'itemDetailsView': {template:`<editfieldtype></editfieldtype>`}
     }
-     
-    
+
+
   })
   .state('fieldType.edit',{
     url:'/edit/:index',
@@ -31,9 +30,9 @@ export const fieldtypes = angular.module('solrTypes', [])
     'itemDetailsView':{template:`<editfieldtype edit-mode="true"></editfieldtype>`}
     }
   });
- 
+
 })
 .directive('fieldTypes', fieldTypesDirective)
 .directive('editfieldtype',fieldTypeDetailsDirective);
 
- 
+

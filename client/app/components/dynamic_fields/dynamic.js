@@ -5,8 +5,8 @@ import {dynamicFieldsDirective} from './dynamic.directive';
 // as exporting the var at the end of the file
 // using export {varname}
 export const dynamic = angular.module('dynamic', [])
-.config(function($stateProvider, $urlRouterProvider) {
-
+.config(function($stateProvider) {
+  "use strict";
   $stateProvider.state('dynamic', {
     url: '/dynamic',
     views: {
@@ -14,17 +14,20 @@ export const dynamic = angular.module('dynamic', [])
 
     }
   })
- .state('dynamic.details',{
-    url:'/add',
+ .state('dynamic.itemDetails',{
+    url:'/index',
     views : {
-    'details': {template:`<editfieldtype></editfieldtype>`}
+    'itemDetails': {template:`<field-details>></field-details>>`}
     }
 
 
   })
   .state('dynamic.edit',{
-    url:'/edit/:id',
-    template:'<editfieldtype></editfieldtype>'
+    url:'/edit/:index',
+     views : {
+    'itemDetailsView':{template:`<field-details edit-mode="true"></field-details>`}
+    }
+
 
   });
 

@@ -25,6 +25,7 @@ import 'material-design-lite/material';
 import angular from 'angular';
 
 import uiRouter from 'angular-ui-router';
+import ngAnimate from 'angular-animate';
 import modal from 'angular-ui-bootstrap/src/modal';
 import {appDirective} from './app.directive';
 import {schema} from './components/schema/schema';
@@ -37,6 +38,7 @@ import {fields} from './components/fields/fields';
 angular.module('app',
                [uiRouter,
                 modal,
+                ngAnimate,
                 schema.name,
                 fieldtypes.name,
                 solrCopyFields.name,
@@ -47,6 +49,7 @@ angular.module('app',
               ])
 .run(
   function($rootScope,SchemaAPI,$timeout,$log) {
+    "use strict";
     $rootScope.$on('$stateChangeStart',(event,toState,toParam,fromState,fromParams) => {
           SchemaAPI.loadFromLocalStorage();
   });

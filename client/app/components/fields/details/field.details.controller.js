@@ -16,19 +16,25 @@ class FieldsDetailsController {
     this.tokenizer = {};
     this.solrTypes=this.SchemaAPI.solrTypes();
     this.selectedType = '';
+
     const self = this;
 
     if (this.editMode){
       let selectedItem = SchemaAPI.solrFields()[$state.params.index];
 
       let ex_params=_.chain(selectedItem)
-                    .omit(['name','class','type','indexAnalyzer','queryAnalyzer'])
+                    .omit(['name','class','type','indexAnalyzer','queryAnalyzer','indexed','stored','multiValued'])
                     .map((result,v,key) => { return {name:v, value:result}; })
                     .value();
-      $log.debug(ex_params);
+      $log.debug(selectedItem);
       this.params = ex_params;
       this.selectedType =selectedItem.type;
+      //set up the field without the optional parameter.
+      // those will get added on save
       this.fieldType ={name: selectedItem.name,
+                                 indexed:selectedItem.indexed,
+                                 stored:selectedItem.stored,
+                                 multiValued:selectedItem.multiValued,
                                  class: selectedItem.class};
 
 

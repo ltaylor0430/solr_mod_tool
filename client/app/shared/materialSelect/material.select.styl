@@ -1,0 +1,40 @@
+.mat-select
+  width 100%
+  box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)
+  border-radius 2px
+  text-align left
+  vertical-align bottom
+
+  line-height 10px
+  padding-left 2px
+  &:focus
+      background:red
+  &:after
+    clear:both
+  button
+      text-trasform none
+
+  .select-icon
+    position absolute
+    right 10px
+
+
+.dropdown-list-item
+    z-index 2
+    position absolute
+    margin 1px
+    box-shadow:0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12)
+    width 100%
+    background #97CD99
+
+    li:hover
+      background #7CC97F
+.list-items ul
+  max-height 300px
+  overflow-y auto
+  transition-property  all
+  transition-duration 2s
+  transition-timing-function cubic-bezier(0, 1, 0.5, 1)
+
+.animate.ng-hide ul
+  max-height 0px

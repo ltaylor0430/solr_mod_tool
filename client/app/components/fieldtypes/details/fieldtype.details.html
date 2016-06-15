@@ -17,9 +17,11 @@
 
     <div  class="analyzer">
         <h4>Tokenizer</h4>
-        <input  ng-checked="vm.tokenizerType == 'indexquery'" name="tokenizerType" ngModel="vm.tokenizerType" value="indexquery" type="radio" >Index &amp; Query
 
-        <input   ng-checked="vm.tokenizerType == 'separate'" ng-model="vm.tokenizerType" value="separate"  name="tokenizerType" type="radio" />Separate
+      <mat-radio name="indexQueryType" selected-Item ="vm.tokenizerType" value="indexquery"></mat-radio><label>Index &amp; Query</label>
+         <mat-radio name="separateType" selected-Item ="vm.tokenizerType" value="separate"></mat-radio><label>Separate</label>
+
+
         <div  ng-if="vm.tokenizerType == 'separate'">
              <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <input  class="mdl-textfield__input" type="text" autocomplete="off" name="tokenclass" ng-model="vm.tokenizer.index.tokenizer.class" />
