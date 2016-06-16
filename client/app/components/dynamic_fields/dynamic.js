@@ -1,5 +1,6 @@
 import angular from 'angular';
 import {dynamicFieldsDirective} from './dynamic.directive';
+import {dynamicDetailsDirective} from './details/dynamic.details.directive';
 
 // placing an export in front of ar var is the same
 // as exporting the var at the end of the file
@@ -10,14 +11,14 @@ export const dynamic = angular.module('dynamic', [])
   $stateProvider.state('dynamic', {
     url: '/dynamic',
     views: {
-    '' : {template: `<dynamicFields></dynamicFields>`}
+    '' : {template: `<dynamic-fields></dynamic-fields>`}
 
     }
   })
  .state('dynamic.itemDetails',{
     url:'/index',
     views : {
-    'itemDetails': {template:`<field-details>></field-details>>`}
+    'itemDetailsView': {template:`<dynamic-details></dynamic-details>`}
     }
 
 
@@ -25,12 +26,14 @@ export const dynamic = angular.module('dynamic', [])
   .state('dynamic.edit',{
     url:'/edit/:index',
      views : {
-    'itemDetailsView':{template:`<field-details edit-mode="true"></field-details>`}
+    'itemDetailsView':{template:`<dynamic-details edit-mode="true"></dynamic-details>`}
     }
 
 
   });
 
 })
-.directive('dynamicFields', dynamicFieldsDirective);
+.directive('dynamicFields', dynamicFieldsDirective)
+.directive('dynamicDetails', dynamicDetailsDirective);
+
 

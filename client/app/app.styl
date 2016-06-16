@@ -10,9 +10,10 @@ h1,h2
 
 .nav, .pagination, .carousel, .panel-title a
   cursor: pointer
+
+
 .content .mdl-layout__header
   background-color  header-color
-
 
 .content .mdl-spinner
   margin: 0 auto
@@ -26,6 +27,13 @@ h1,h2
   line-height 13px
   text-transform uppercase
 
+.header-image
+  background:  url('../images/header_1.png') center center
+  background-size cover
+  background-repeat no-repeat
+  .is-compact
+    background transparent
+
 .mdl-navigation__link--icon>.material-icons
   margin-right: 8px
   margin-top: 8px
@@ -35,11 +43,13 @@ h1,h2
   width: 100%
   margin: 0 auto
   padding: 0
+  padding-top 64px
 
 .fem-card.mdl-card
   width: 100%
   min-height: inherit
   cursor: pointer
+  position relative
 
 .fem-card .mdl-textfield
   width: 100%;
@@ -71,6 +81,23 @@ h1,h2
   width: 200px !important
   margin-top: -8px
   margin-left: 5px
+
+.radial
+
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(50,50,50,0.8)),to(rgba(80,80,80,0.2)), color-stop(.5,#333333))
+  position absolute
+
+  top 0
+  left 0
+  width 100%
+  height 100%
+.footer-image
+
+   position: relative;
+   background:  url('../images/road.jpg')  center center
+   background-size cover
+   background-repeat no-repeat
+
 
 .none
   display: none

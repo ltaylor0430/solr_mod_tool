@@ -1,51 +1,48 @@
 <div  class="fem-card mdl-card mdl-shadow--2dp">
-<div class="mdl-card__title">  <h3 ng-if="!vm.editMode">Create Field</h3><h3 ng-if="vm.editMode">Edit Field</h3>
-</div>
-     <div class="mdl-card__supporting-text">
-      <ng-form name="vm.itemDetails" auto-complete="false" no-validate>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input  ng-disabled="vm.editMode" class="mdl-textfield__input" type="text" autocomplete="off" name="name" ng-model="vm.fieldType.name" />
-          <label class="mdl-textfield__label" for="name">Name</label>
-        </div>
-         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+  <!--title-->
+  <div class="mdl-card__title">
+    <h3  ng-bind="vm.detailTitle"></h3>
+  </div>
+  <!--form -->
+  <div class="mdl-card__supporting-text">
+    <ng-form name="vm.itemDetails" auto-complete="false" no-validate>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <input  ng-disabled="vm.editMode" class="mdl-textfield__input" type="text" autocomplete="off" name="name" ng-model="vm.fieldType.name" />
+        <label class="mdl-textfield__label" for="name">Name</label>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 
-        <mat-select selected-item="vm.selectedType" items="vm.solrTypes"></mat-select>
-        <!--
-         <select  class="mdl-shadow--4dp" name="types" ng-model="vm.selectedType">
-            <option ng-selected="vm.selectedType == item.name" ng-repeat ="item in vm.solrTypes"
-             value="{{item.name}}">{{item.name}}</option>
-         </select>
-  -->
-         </div>
-         <div class="mdl-list commonParams">
-          <div class="mdl-list__item">
+        <mat-select name="Type" selected-item="vm.selectedType" items="vm.solrTypes"></mat-select>
+
+      </div>
+      <div class="mdl-list commonParams">
+        <div class="mdl-list__item">
           <span class="mdl-list__item-primary-content">Indexed</span>
           <mat-radio selected-item="vm.fieldType.indexed" value="true"/> True
           <mat-radio selected-item="vm.fieldType.indexed" value="false" /> False
-         </div>
-         <div class="mdl-list__item">
+        </div>
+        <div class="mdl-list__item">
           <span class="mdl-list__item-primary-content">Stored</span>
           <mat-radio selected-item="vm.fieldType.stored" value="true"/> True
           <mat-radio selected-item="vm.fieldType.stored" value="false" /> False
-         </div>
-         <div class="mdl-list__item">
+        </div>
+        <div class="mdl-list__item">
           <span class="mdl-list__item-primary-content">Multivalued</span>
           <mat-radio selected-item="vm.fieldType.multiValued" value="true"/> True
           <mat-radio selected-item="vm.fieldType.multiValued" value="false" /> False
-         </div>
-         <!--params -->
-          <params binding-to="vm.params"></params>
+        </div>
+        <!--params -->
+        <params binding-to="vm.params"></params>
         <br/>
         <hr/>
 
+        <!--commands-->
+        <div>
 
+         <button ng-click="vm.cancel()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">CANCEL</button>
+         <button  ng-click="vm.addFieldType()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">SAVE</button>
 
-      <div>
-          <label >
-           <button ng-click="vm.cancel()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">CANCEL</button>
-           <button  ng-click="vm.addFieldType()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">SAVE</button>
-          </label>
-          </div>
-    </ng-form>
-    </div>
-</div>
+       </div>
+     </ng-form>
+   </div>
+ </div>

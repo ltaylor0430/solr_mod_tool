@@ -1,50 +1,41 @@
 import './material.select.styl';
+
 import {MaterialSelectController as controller} from './material.select.controller';
 
 
-export const matSelectDirective = () => {
+export const matSelectDirective = ($window) => {
  "use strict";
   return {
     template:`
-    <div  ng-init="expanded = false" deep-blur="expanded = false">
-    <button  ng-attr-expanded="{{expanded}}"  ng-click="expanded = !expanded" class=" mat-select mdl-button mdl-js-button mdl-button--icon">
-                  {{selectedItem}}asfs
-                  <div class="select-icon">
-                    <i  class="material-icons" >expand_more</i>
-                    </div>
-                   </button>
-                  <div  class="animate list-items" ng-show="expanded">
 
-                      <ul  ng-blur="vm.hide()"   class="dropdown-list-item mdl-list">
-                        <li ng-click="vm.onSelectItemChange(item)"  class="mdl-list__item">
-                          <span class="mdl-list__item-primary-content">
-                            Bryan Cranston
-                          </span>
-                        </li>
-                        <li class="mdl-list__item">
-                          <span class="mdl-list__item-primary-content">
-                            Aaron Paul
-                          </span>
-                        </li>
-                        <li class="mdl-list__item">
-                          <span class="mdl-list__item-primary-content">
-                            Bob Odenkirk
-                          </span>
-                        </li>
-                      </ul>
-                  </div>
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select">
+      <input ng-model="vm.selectedItem" class="mdl-textfield__input" type="text" id="{{vm.name}}" readonly tabIndex="-1" value=" " data-val="{{vm.selectedItem}}"/>
+       <label for="{{vm.name}}">
+                <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
+            </label>
+        <label class="mdl-textfield__label" for="{{vm.name}}">{{vm.name}}</label>
+        <ul  class="mdl-menu mdl-menu--bottom-left mdl-js-menu" for="{{vm.name}}">
+          <li  ng-click="vm.selectedItem = item.name" ng-repeat="item in vm.items" class="mdl-menu__item" data-val="{{item.name}}">{{item.name}}</li>
 
-          </div>
+        </ul>
+    </div>
+
 `,
     controller:controller,
     controllerAs: 'vm',
     restrict: 'E',
     replace: true,
+    bindToController:true,
     scope: {
                   name:'@',
+
                   selectedItem:'=',
-                  items: '='}
+                  items: '='},
+                  link: (scope,elem,attr,ctrl) => {
+
+                  }
 
 
   };
 };
+

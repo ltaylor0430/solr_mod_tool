@@ -1,24 +1,46 @@
-<div id="app" class="content mdl-layout mdl-js-layout mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
+<div id="app" class="content mdl-layout mdl-js-layout">
+<!-- MDL Spinner Component -->
+
+  <header class="header-image mdl-layout__header mdl-layout__header--waterfall">
     <div class="mdl-layout__header-row">
             <span class="mdl-layout-title">Solr Schema Tool</span>
             <div class="mdl-layout-spacer"></div>
 
-     <nav class="mdl-navigation">
-
+     <nav class="mdl-navigation ">
         <a class="mdl-navigation__link" ui-sref="schema">Import</a>
-
         <a class="mdl-navigation__link" ui-sref="fieldType.itemDetails">Types</a>
         <a class="mdl-navigation__link" ui-sref="fields.itemDetails">Fields</a>
         <a class="mdl-navigation__link" ui-sref="dynamic.itemDetails">Dynamic Fields</a>
         <a class="mdl-navigation__link" ui-sref="copy.itemDetails">Copy Fields</a>
-
       </nav>
+
     </div>
+<div class="mdl-layout__header-row">
+  <div class="mdl-layout-spacer"></div>
+      <!-- Navigation -->
+
+    </div>
+  </header>
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">Title</span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+    </nav>
+</div>
 
   </header>
-  <main class="mdl-layout__content page-content">
-    <div ui-view></div>
+
+  <main class="mdl-layout__content ">
+
+    <div class="page-content" ui-view></div>
   </main>
-  <footer></footer>
+  <footer class="footer-image">
+  <div class="radial"> </div>
+  <div class="content">
+   <span>Made by Lawrence Taylor</span>
+  </div>
+  </footer>
 </div>

@@ -19,48 +19,10 @@ class FieldsController {
       this.selectedItem = item;
 
       $log.debug('selected Item');
-      $state.go('fields.edit',{index:$index});
+      $state.go('^.edit',{index:$index});
       $log.debug(this.selectedItem);
     };
-    /*this.showAnalyzer = () => {
-      const opts = {
-                  template: analyzerTemplate,
-                  controller: function($scope,$log, $q, $uibModalInstance) {
-                        $log.debug( self.field);
-                        this.tokenizerType = 'indexquery';
-                        this.filters = [];
-                        this.tokenizerParams=[];
-                         this.saveAnalyzer = () => {
 
-                                //create analyzer object
-                                this.analyzer = {
-                                  tokenizer: {
-                                    class:  this.tokenizerClass
-                                  },
-                                  filters:this.filters
-                                };
-                                //add
-                                    _(this.tokenizerParams)
-                                    .forEach((item) => {
-                                        _.extend(this.analyzer.tokenizer,item);
-                                    });
-                               // _.extend(this.analyzer.tokenizer,tk_params);
-
-                                self.field.analyzer = this.analyzer;
-                               $log.debug(self.field);
-
-                                //close Modal, save changes to analyzer object
-                                $uibModalInstance.close();
-
-                         };
-
-                   },
-                  controllerAs:'vm',
-                  size:'lg'};
-      this.modal = $uibModal.open(opts);
-
-    };
-*/
      this.reset = () => {
         this.isAddNewfield = !this.isAddNewfield;
 

@@ -5,16 +5,23 @@ const schemaAPI= ($http,$log, API) => {
     let schema =  {};
     let solrTypes = [];
     let solrFields = [];
-   let solrCopyFields =[];
+    let solrCopyFields =[];
+    let solrDynamicFields = [];
    const getSolrType = () => {
      return getSchema().fieldTypes;
    };
       const getSolrFields = () => {
     return getSchema().fields;
    };
-      const getSolrCopyFields = () => {
+    const getSolrCopyFields = () => {
+      $log.debug('solr copy fields');
+      $log.debug(solrCopyFields);
     return solrCopyFields;
    };
+      const getSolrDynamicFields = () => {
+    return solrDynamicFields;
+   };
+
     const getSchema = () => {
         return existingSchema;
       };
@@ -141,6 +148,7 @@ const schemaAPI= ($http,$log, API) => {
                 $log.debug(solrFields);
                solrTypes = existingSchema.fieldTypes;
                 solrCopyFields = existingSchema.copyFields;
+                solrDynamicFields = existingSchema.dynamicFields;
                 saveToLocalStorage();
       });
     };
@@ -152,6 +160,7 @@ const schemaAPI= ($http,$log, API) => {
                 $log.debug(solrFields);
                 solrTypes = existingSchema.fieldTypes;
                 solrCopyFields = existingSchema.copyFields;
+                solrDynamicFields = existingSchema.dynamicFields;
                 saveToLocalStorage();
       });
     };
@@ -207,11 +216,18 @@ const schemaAPI= ($http,$log, API) => {
          solrTypes = getSchema().fieldTypes;
        }
        if(getSchema().copyField) {
-         solrFields = getSchema().copyField;
+         solrCopyFields = getSchema().copyField;
        } else {
-         solrFields = getSchema().copyFields;
+         solrCopyFields = getSchema().copyFields;
        }
-      }
+             }
+       if(getSchema().dynamicField) {
+         solrDynamicFields = getSchema().dynamicField;
+       } else {
+         solrDynamicFields = getSchema().dynamicFields;
+       }
+
+
     $log.debug(solrTypes);
   };
 const exportSchemaChanges = () =>{
@@ -259,6 +275,7 @@ const undoFieldTypeChanges = (fieldType, $index) => {
               solrTypes:getSolrType,
               solrFields:getSolrFields,
               solrCopyFields:getSolrCopyFields,
+              solrDynamicFields:getSolrDynamicFields,
               addField,
               addFieldType,
               addCopyField,

@@ -2,7 +2,7 @@ import './field.details.styl';
 import {FieldsDetailsController as controller} from './field.details.controller';
 import template from './field.details.html';
 
-export const fieldsDetailsDirective = ($window)=> {
+export const fieldsDetailsDirective = ()=> {
   "use strict";
   return {
     template,
@@ -10,6 +10,7 @@ export const fieldsDetailsDirective = ($window)=> {
     controllerAs: 'vm',
     restrict: 'E',
     replace: true,
+    bindToController:true,
     scope: { editMode : '='}
     //TODO: write unsaved changes warning
 /*    link:(scope,iElem,iAttrs,ctrl)=> {

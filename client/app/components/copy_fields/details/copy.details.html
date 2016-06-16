@@ -1,0 +1,26 @@
+<div  class="fem-card mdl-card mdl-shadow--2dp">
+<div class="mdl-card__title">  <h3 ng-if="!vm.editMode">Create Copy Field</h3><h3 ng-if="vm.editMode">Edit Copy Field</h3>
+</div>
+     <div class="mdl-card__supporting-text">
+      <ng-form name="vm.itemDetails" auto-complete="false" no-validate>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input  ng-disabled="vm.editMode" class="mdl-textfield__input" type="text" autocomplete="off" name="name" ng-model="vm.fieldType.source" />
+          <label class="mdl-textfield__label" for="name">Source</label>
+        </div>
+         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input  class="mdl-textfield__input" type="text" autocomplete="off" name="name" ng-model="vm.fieldType.dest" />
+          <label class="mdl-textfield__label" for="name">Destination</label>
+        </div>
+         <!--params -->
+          <params binding-to="vm.params"></params>
+        <br/>
+        <hr/>
+
+      <div>
+           <button ng-click="vm.cancel()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">CANCEL</button>
+
+           <button  ng-click="vm.addFieldType()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">SAVE</button>
+          </div>
+    </ng-form>
+    </div>
+</div>

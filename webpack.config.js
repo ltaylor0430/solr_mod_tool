@@ -29,6 +29,7 @@ module.exports = {
       { test: /\.svg$/,    loader: "file-loader?prefix=font/" },
       { test: /\.json$/,   loader: 'json-loader'},
       { test: /\.md$/, loader: "html!markdown" },
+      { test:[ /\.png$/,/\.jpg$/] ,loader: "url-loader?limit=10000" }
     ]
   },
 

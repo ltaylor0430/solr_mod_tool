@@ -1,12 +1,10 @@
-import analyzerTemplate from './tokenizer.tpl.html';
-import _ from 'lodash';
+
 //Item Detail
-class FieldsDetailsController {
+class DynamicDetailsController {
  constructor($scope,$log,$state, $uibModal,SchemaAPI) {
    this.fieldType  ={};
     this.params = [];
     this.test = 'test!';
-    this.detailTitle = 'Create Field';
     this.modal = undefined;
     this.SchemaAPI = SchemaAPI;
     this.filters = [];
@@ -20,8 +18,7 @@ class FieldsDetailsController {
     const self = this;
 
     if (this.editMode){
-      let selectedItem = SchemaAPI.solrFields()[$state.params.index];
-      this.detailTitle = 'Edit ' + selectedItem.name;
+      let selectedItem = SchemaAPI.solrDynamicFields()[$state.params.index];
 
       let ex_params=_.chain(selectedItem)
                     .omit(['name','class','type','indexAnalyzer','queryAnalyzer','indexed','stored','multiValued'])
@@ -40,44 +37,7 @@ class FieldsDetailsController {
 
 
     }
-    this.showAnalyzer = () => {
-      const opts = {
-                  template: analyzerTemplate,
-                  controller: function($scope,$log, $q, $uibModalInstance) {
-                        $log.debug( self.fieldType);
-                        this.tokenizerType = 'indexquery';
-                        this.filters = [];
-                        this.tokenizerParams=[];
-                         this.saveAnalyzer = () => {
 
-                                //create analyzer object
-                                this.analyzer = {
-                                  tokenizer: {
-                                    class:  this.tokenizerClass
-                                  },
-                                  filters:this.filters
-                                };
-                                //add
-                                    _(this.tokenizerParams)
-                                    .forEach((item) => {
-                                        _.extend(this.analyzer.tokenizer,item);
-                                    });
-                               // _.extend(this.analyzer.tokenizer,tk_params);
-
-                                self.fieldType.analyzer = this.analyzer;
-                               $log.debug(self.fieldType);
-
-                                //close Modal, save changes to analyzer object
-                                $uibModalInstance.close();
-
-                         };
-
-                   },
-                  controllerAs:'vm',
-                  size:'lg'};
-      this.modal = $uibModal.open(opts);
-
-    };
      this.setFieldType = (ft) => {
         this.fieldType = ft;
 
@@ -116,5 +76,5 @@ class FieldsDetailsController {
 }
 
 }
-  export {FieldsDetailsController};
+  export {DynamicDetailsController};
 

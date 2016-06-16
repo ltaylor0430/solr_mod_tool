@@ -34,6 +34,7 @@ import {fieldtypes} from './components/fieldtypes/fieldtypes';
 import {solrCopyFields} from './components/copy_fields/copy';
 import {dynamic} from './components/dynamic_fields/dynamic';
 import {fields} from './components/fields/fields';
+import 'getmdl-select/getmdl-select.min.css';
 
 angular.module('app',
                [uiRouter,
