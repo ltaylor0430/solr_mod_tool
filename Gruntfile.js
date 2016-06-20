@@ -7,6 +7,7 @@ module.exports = function (grunt) {
   app: ['client/app/**/*.{js,styl,html}'],
   js: 'client/app/**/*!(.spec.js).js',
   styl:['client/app/**/*.styl', 'client/style/**/*.styl'],
+  test: 'client/app/**/*.spec.js',
   toCopy: ['client/index.html'],
   html: ['client/index.html', 'client/app/**/*.html'],
   dest: 'dist'
@@ -39,6 +40,10 @@ grunt.initConfig({
       index: {
         files:paths.toCopy,
         tasks: 'copy'
+      },
+      test: {
+        files: paths.test,
+        tasks: ['karma:continuous:run'],
       }
 
   },
@@ -78,6 +83,18 @@ grunt.initConfig({
         debug: true
       }
     },
+ // Test settings
+    karma: {
+        unit: {
+          configFile: 'karma.conf.js',
+          singleRun: true
+        },
+        continuous: {
+          configFile: 'karma.conf.js',
+          singleRun: false,
+          background:true
+        }
+    },
 
     "webpack-dev-server": {
       options: {
@@ -109,6 +126,7 @@ grunt.initConfig({
     'build',
     'copy',
     'webpack-dev-server:start',
+    'karma:continuous:start',
     'watch'
   ]);
  grunt.registerTask('build', ['todo']);
