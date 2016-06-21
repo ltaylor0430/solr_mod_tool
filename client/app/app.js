@@ -45,19 +45,16 @@ angular.module('app',
                 solrCopyFields.name,
                 dynamic.name,
                 fields.name,
-                shared.name
-
+                shared.name,
               ])
-.run(
-  function($rootScope,SchemaAPI,$timeout,$log) {
-    "use strict";
-    $rootScope.$on('$stateChangeStart',(event,toState,toParam,fromState,fromParams) => {
-          SchemaAPI.loadFromLocalStorage();
+.run(($rootScope, SchemaAPI, $timeout)=> {
+  $rootScope.$on('$stateChangeStart', () => {
+    SchemaAPI.loadFromLocalStorage();
   });
-       $rootScope.$on('$viewContentLoaded', ()=> {
-          $timeout(() => {
-            componentHandler.upgradeAllRegistered();
-          });
-        });
+  $rootScope.$on('$viewContentLoaded', ()=> {
+    $timeout(() => {
+      componentHandler.upgradeAllRegistered();
+    });
+  });
 })
 .directive('app', appDirective);
