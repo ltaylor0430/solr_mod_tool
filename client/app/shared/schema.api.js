@@ -6,6 +6,8 @@ const schemaAPI = ($http, $log, API) => {
   let solrFields = [];
   let solrCopyFields =[];
   let solrDynamicFields = [];
+
+
   const getSolrType = () => {
     return getSchema().fieldTypes;
   };
@@ -33,26 +35,27 @@ const schemaAPI = ($http, $log, API) => {
     schema = existingSchema;
   };
 
+   // using local Storage to persist changes.
+  const saveToLocalStorage = () => {
+    localStorage.setItem('modified_schema', JSON.stringify(getSchema()));
+  };
+
   const addFieldType = (fieldType) => {
-    fieldType.isNew = true;
+    fieldType.operation = 'new';
     getSolrType().push(angular.copy(fieldType));
     // update localStorage;
     saveToLocalStorage();
-    // clear
-    fieldType = {};
   };
 
   const replaceFieldType = (fieldType) => {
-    fieldType.replace = true;
+    fieldType.operation='replace';
     getSolrType().push(angular.copy(fieldType));
     //update localStorage;
     saveToLocalStorage();
-    //clear
-    fieldType = {};
   };
     // add  Field
   const addField = (field)  =>{
-    field.isNew = true;
+    field.operation = 'new';
     solrFields.push(angular.copy(field));
     // clear
     field = {};
@@ -60,7 +63,7 @@ const schemaAPI = ($http, $log, API) => {
 
   // add Copy Field
   const addCopyField = (cpField)  =>{
-     cpField.isNew = true;
+     cpField.operation = 'new';
      solrCopyFields.push(angular.copy(cpField));
      // clear
      cpField = {};
@@ -68,7 +71,7 @@ const schemaAPI = ($http, $log, API) => {
 
    //Remove fields
     const removeField = (fieldDef, $index)  =>{
-      fieldDef.remove = true;
+      fieldDef.operation = 'remove';
       //remove field from schema
       saveToLocalStorage();
         $log.debug(fieldDef);
@@ -78,19 +81,21 @@ const schemaAPI = ($http, $log, API) => {
 
     };
 
-    const  removeFieldType = (fieldType, $index)  =>{
-      fieldType.remove = true;
-      //update
-     solrTypes[$index]= fieldType;
-      //remove field from schema
+  const  removeFieldType = (fieldType, $index)  =>{
+    if (fieldType.operation === 'new') {
+      getSolrType().splice($index, 1);
+    } else {
+      fieldType.operation = 'remove';
+      // update
+      solrTypes[$index] = fieldType;
+      // remove field from schema
       $log.debug('removing field type');
       $log.debug(getSolrType());
-      if (angular.isDefined(fieldType.isNew)) {
-        getSolrType().splice($index,1);
-      }
+
       $log.debug(solrTypes);
-     saveToLocalStorage();
-    };
+    }
+    saveToLocalStorage();
+  };
 
    const  removeCopyField = (copyField,$index) => {
       copyField.remove = true;
@@ -176,9 +181,9 @@ const schemaAPI = ($http, $log, API) => {
     };
 
     const getOutput = (command,output,key,_array) =>{
-      _.chain(_array).filter({[key]: true})
+      _.chain(_array).filter((o) => {return angular.isDefined(o.operation); })
           .map( (o)=>{
-              o =_.omit(o,[key]);
+              o = _.omit(o, 'operation');
               if (command ==='delete-field-type') {
                   return {[command]: {name: o.name}};
               } else {
@@ -194,11 +199,6 @@ const schemaAPI = ($http, $log, API) => {
     //The actual json has duplicate keys which is technically invalid.  need to  massage the output to
     //allow this to happen
     //
-//using local Storage to persist changes.
- const saveToLocalStorage = () => {
-
-    localStorage.setItem('modified_schema',JSON.stringify(getSchema()));
-  };
 
   const loadFromLocalStorage = () => {
     localStorage.getItem('modified_schema');
@@ -235,15 +235,15 @@ const schemaAPI = ($http, $log, API) => {
 const exportSchemaChanges = () => {
 
      let output = '';
-     let typeCommands = [{command: 'add-field-type',  key: 'isNew'},
-                         {command: 'delete-field-type',  key: 'remove'},
-                         {command: 'replace-field-type',  key: 'replace'}];
-     let fieldCommands = [{command: 'add-field',  key: 'isNew'},
-                          {command: 'delete-field',  key: 'remove'},
-                          {command: 'replace-field',  key: 'replace'}];
+     let typeCommands = [{command: 'add-field-type',  key: 'operation.new'},
+                         {command: 'delete-field-type',  key: 'operation.remove'},
+                         {command: 'replace-field-type',  key: 'operation.replace'}];
+     let fieldCommands = [{command: 'add-field',  key: 'operation..new'},
+                          {command: 'delete-field',  key: 'operation.remove'},
+                          {command: 'replace-field',  key: 'operation.replace'}];
 
-    let copyCommands = [{command: 'add-copy-field',  key: 'isNew'},
-                        {command: 'delete-copy-field',  key: 'remove'}];
+    let copyCommands = [{command: 'add-copy-field',  key: 'operation.new'},
+                        {command: 'delete-copy-field',  key: 'operation.remove'}];
     $log.debug(getSolrType());
     _.each(typeCommands, (c) => {
       $log.debug(c);
@@ -263,8 +263,8 @@ const exportSchemaChanges = () => {
      return output;
 };
   const undoFieldTypeChanges = (fieldType, $index) => {
-    fieldType.remove = false;
-    delete fieldType.replace;
+    delete fieldType.operation;
+//    delete fieldType.replace;
     // update
     solrTypes[$index] = fieldType;
     saveToLocalStorage();

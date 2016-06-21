@@ -63,23 +63,89 @@ describe('FieldTypes', () => {
 
   });
   describe('controller', () => {
+     beforeEach(() => {
+      // create sandbox to restore changes after test
+      sandbox = sinon.sandbox.create();
+    });
+     beforeEach(() => {
+       //create a mock schema
+      let schema = sandbox.mock({
+                                  fieldTypes: [],
+                                  fields: [],
+                                  dynamicFields: [],
+                                  copyFields: []
+                                });
+      schemaApi.setSchema(schema.object);
+      console.log(schemaApi.getSchema().fieldTypes);
+     });
+    afterEach(() => {
+      sandbox.restore();
+    });
     it('should edit field type', () => {
+
+        let spy = sandbox.spy($state,'go');
+        const controller = makeController( $log, $state, schemaApi);
+        controller.editType();
+        assert($state.go.calledOnce, "method was not call or called too many times");
+        // we change state, need to run a digest cycle
+        $scope.$apply();
+        expect($state.current).to.have.property('name').and.to.equal('fieldType.edit');
+
 
     });
     it('should add field type', () => {
+         sandbox.stub($state,'go');
+
+       const controller = makeController( $log, $state, schemaApi);
+       controller.fieldType = {name:'fooBar'};
+       controller.addFieldType();
+       expect(schemaApi.solrTypes()).to.have.lengthOf(1);
+       expect(schemaApi.solrTypes()[0]).to.have.property('name').and.to.equal('fooBar');
+        expect(schemaApi.solrTypes()[0]).to.have.property('operation').and.to.equal('new');
+    });
+    it('should remove  field type', () => {
+        let spy = sandbox.spy($state,'go');
+
+        const controller = makeController( $log, $state, schemaApi);
+
+        schemaApi.solrTypes().push( {name:'foo'});
+        expect(schemaApi.solrTypes()).to.have.lengthOf(1);
+        controller.removeFieldType(schemaApi.solrTypes()[0],0);
+        expect(schemaApi.solrTypes()[0]).to.have.property('operation').and.to.equal('remove');
+
 
     });
-    it('should remove field type', () => {
+    it('should delete new field type', () => {
+        let spy = sandbox.spy($state,'go');
+
+        const controller = makeController( $log, $state, schemaApi);
+        schemaApi.solrTypes().push( {name:'foo', operation:'new'});
+        controller.removeFieldType(schemaApi.solrTypes()[0],0);
+        expect(schemaApi.solrTypes()).to.have.lengthOf(0);
 
     });
     it('should undo item changes', () => {
+        const controller = makeController( $log, $state, schemaApi);
 
+        schemaApi.solrTypes().push( {name:'foo', operation:'replace'});
+        expect(schemaApi.solrTypes()).to.have.lengthOf(1);
+        controller.undoItemChanges(schemaApi.solrTypes()[0],0);
+        expect(schemaApi.solrTypes()[0]).to.not.have.property('operation');
+
+    });
+
+   it('should replace item', () => {
+        const controller = makeController( $log, $state, schemaApi);
+        schemaApi.solrTypes().push( {name:'foo', operation:'new'});
+        controller.removeFieldType(schemaApi.solrTypes()[0],0);
+        expect(schemaApi.solrTypes()).to.have.lengthOf(0);
     });
 
   });
   describe('template', () => {
     it('should strikethrough item on remove', () => {
       // compile template and scope
+
 
     });
     it('should filter items marked new', () => {

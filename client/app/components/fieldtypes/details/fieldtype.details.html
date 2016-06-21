@@ -1,4 +1,4 @@
-<div  class="fem-card mdl-card mdl-shadow--2dp">
+<div  ng-init="vm.init()" class="fem-card mdl-card mdl-shadow--2dp">
 <div class="mdl-card__title">  <h3 ng-if="!vm.editMode">Create Type</h3><h3 ng-if="vm.editMode">Edit Type</h3>
 </div>
      <div class="mdl-card__supporting-text">
@@ -49,7 +49,7 @@
 <div>
 <label >
  <button ng-click="vm.cancel()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">CANCEL</button>
- <button  ng-click="vm.addFieldType()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">SAVE</button>
+ <button  ng-click="vm.save()" class="mdl-cell--bottom mdl-button mdl-js-button mdl-js-ripple-effect">SAVE</button>
 </label>
 </div>
 </ng-form>

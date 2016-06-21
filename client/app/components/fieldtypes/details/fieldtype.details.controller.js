@@ -1,110 +1,80 @@
-import analyzerTemplate from './tokenizer.tpl.html';
 import _ from 'lodash';
 //Item Detail
 class FieldTypeDetailsController {
- constructor($scope,$log,$state, $uibModal,SchemaAPI) {
-   this.fieldType               ={};
-    this.editMode             =$scope.editMode;
+  constructor($scope, $log, $state, SchemaAPI) {
+    this.fieldType              = {};
     this.params                = [];
     this.test                      = 'test!';
     this.modal                  = undefined;
     this.SchemaAPI          = SchemaAPI;
     this.filters                   = [];
-    this.tokenizerParams =[];
+    this.tokenizerParams = [];
     this.analyzer              = {};
     this.tokenizer             = {};
-    this.tokenizerType ='indexquery';
-    const self = this;
 
-    if (this.editMode){
-      let selectedItem = SchemaAPI.solrTypes()[$state.params.index];
+    this.tokenizerType = 'indexquery';
 
-      let ex_params=_.chain(selectedItem)
-                    .omit(['name','class','analyzer','indexAnalyzer','queryAnalyzer'])
-                    .map((result,v,key) => { return {name:v, value:result}; })
-                    .value();
-      $log.debug(ex_params);
-      this.params = ex_params;
-      this.fieldType ={name: selectedItem.name,
-                                 class: selectedItem.class};
+    this.init = () => {
+      if (this.editMode) {
+        let selectedItem = SchemaAPI.solrTypes()[$state.params.index];
+        // Init Field Type
+        let workingCopy = angular.copy(selectedItem);
 
-      if (selectedItem.analyzer)
-      {
-        //index query
-        this.tokenizerType = 'indexquery';
-        this.tokenizer = selectedItem.analyzer.tokenizer;
-        this.filters = selectedItem.analyzer.filters;
-      } else {
-           this.tokenizerType = 'separate';
-           this.tokenizer.index = selectedItem.indexAnalyzer;
-           this.tokenizer.query = selectedItem.queryAnalyzer;
-
+        this.initFieldType(workingCopy);
+        this.initTokenizer(workingCopy);
       }
-
-
-    }
-    this.showAnalyzer = () => {
-      const opts = {
-                  template: analyzerTemplate,
-                  controller: function($scope,$log, $q, $uibModalInstance) {
-                        $log.debug( self.fieldType);
-                        this.tokenizerType = 'indexquery';
-                        this.filters = [];
-                        this.tokenizerParams=[];
-                         this.saveAnalyzer = () => {
-
-                                //create analyzer object
-                                this.analyzer = {
-                                  tokenizer: {
-                                    class:  this.tokenizerClass
-                                  },
-                                  filters:this.filters
-                                };
-                                //add
-                                    _(this.tokenizerParams)
-                                    .forEach((item) => {
-                                        _.extend(this.analyzer.tokenizer,item);
-                                    });
-                               // _.extend(this.analyzer.tokenizer,tk_params);
-
-                                self.fieldType.analyzer = this.analyzer;
-                               $log.debug(self.fieldType);
-
-                                //close Modal, save changes to analyzer object
-                                $uibModalInstance.close();
-
-                         };
-
-                   },
-                  controllerAs:'vm',
-                  size:'lg'};
-      this.modal = $uibModal.open(opts);
-
     };
-     this.setFieldType = (ft) => {
+
+    this.initFieldType = (item) =>  {
+      let exParams = _.chain(item)
+                      .omit(['name', 'class', 'analyzer', 'indexAnalyzer', 'queryAnalyzer'])
+                      .map((result, v) => { return {name: v, value: result}; })
+                      .value();
+      $log.debug(exParams);
+      this.params = exParams;
+      this.fieldType = {name: item.name,
+                                   class: item.class};
+    };
+
+    this.initTokenizer = (item) => {
+      if (item.analyzer) {
+         // index query
+        this.tokenizerType = 'indexquery';
+        this.tokenizer = item.analyzer.tokenizer;
+        this.filters = item.analyzer.filters;
+      } else {
+        this.tokenizerType = 'separate';
+        this.tokenizer.index = item.indexAnalyzer;
+        this.tokenizer.query = item.queryAnalyzer;
+      }
+    };
+
+  /*  this.setFieldType = (ft) => {
         this.fieldType = ft;
-        this.params = _(ft).without
-    };
-  this.reset = () => {
-        fieldType = {params:[]};
-        this.isAddNewFieldType = !this.isAddNewFieldType;
+    };*/
+    this.reset = () => {
+      this.fieldType = {};
+        this.init();
+        //this.isAddNewFieldType = !this.isAddNewFieldType;
 
       };
 
-    this.addFieldType = () => {
+    this.save = () => {
 
-      //add field type, but 1st add all optional params
-      //TODO: reference fieldType as the destination object in directive
+      // add field type, but 1st add all optional params
+      // TODO: reference fieldType as the destination object in directive
+
       _(this.params)
           .forEach((item) => {
              $log.debug(item);
             this.fieldType[item.name] = item.value;
       });
       if (this.editMode) {
-         this.SchemaAPI.replaceFieldType( this.fieldType);
+
+          this.SchemaAPI.replaceFieldType( this.fieldType);
 
       } else {
-      this.SchemaAPI.addFieldType( this.fieldType);
+        this.SchemaAPI.addFieldType( this.fieldType);
       }
       $log.debug(this.fieldType);
       $state.go('^.itemDetails');

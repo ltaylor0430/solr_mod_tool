@@ -10,11 +10,12 @@ export const fieldTypeDetailsDirective = ($window)=> {
     controllerAs: 'vm',
     restrict: 'E',
     replace: true,
-    scope: { editMode : '='}
+    bindToController: true,
+    scope: {editMode: '='},
     //TODO: write unsaved changes warning
 /*    link:(scope,iElem,iAttrs,ctrl)=> {
         scope.$watch('type',(newVal, oldVal)=>{
-           
+
             if (angular.equals(newVal,oldVal)) {
                 return;
             }
@@ -27,8 +28,8 @@ export const fieldTypeDetailsDirective = ($window)=> {
                 newVal = scope.type;
               }
           }
-            
-           
+
+
         });
     }*/
   };

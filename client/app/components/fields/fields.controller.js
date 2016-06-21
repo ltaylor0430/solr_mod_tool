@@ -2,7 +2,7 @@
 import _ from 'lodash';
 
 class FieldsController {
- constructor($log,$state, $uibModal,SchemaAPI) {
+  constructor($log,$state, $uibModal,SchemaAPI) {
     this.field = {};
     this.params = [];
     this.test = 'test!';
@@ -11,22 +11,20 @@ class FieldsController {
     $log.debug($state);
     this.solrFields = this.SchemaAPI.solrFields();
     $log.debug(this.solrFields);
-    const self = this;
+
     this.hasNew = () => {
             return (this.isAddNewfield ? '!!' : '!');
-        };
-   this.editType=(item,$index) => {
+    };
+    this.editType = (item, $index) => {
       this.selectedItem = item;
-
       $log.debug('selected Item');
-      $state.go('^.edit',{index:$index});
+      $state.go('^.edit', {index: $index});
       $log.debug(this.selectedItem);
     };
 
-     this.reset = () => {
-        this.isAddNewfield = !this.isAddNewfield;
-
-      };
+    this.reset = () => {
+       this.isAddNewfield = !this.isAddNewfield;
+    };
 
     this.addField = () => {
       //add field type, but 1st add all optional params
@@ -37,21 +35,19 @@ class FieldsController {
       });
       this.SchemaAPI.addfield( this.field);
       $log.debug(this.field);
-       $state.go('^');
+      $state.go('^');
 
     };
 
     this.removefield = (field, $index) => {
-      $log.debug('removing field type :' + $index);
-     this.SchemaAPI.removefield(field, $index);
+      $log.debug('removing field  :' + $index);
+      this.SchemaAPI.removefield(field, $index);
     };
+
     this.undoItemChanges = (item, $index) => {
-        this.SchemaAPI.undofieldChanges(item, $index);
-
-
+      this.SchemaAPI.undofieldChanges(item, $index);
     };
-
+  }
 }
-}
-  export {FieldsController};
+export {FieldsController};
 

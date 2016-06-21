@@ -9,9 +9,8 @@ class FieldTypesController {
     this.selectedItem = {};
     this.modal = undefined;
     this.SchemaAPI = SchemaAPI;
-    $log.debug($state);
     this.solrTypes = this.SchemaAPI.solrTypes();
-    $log.debug(this.solrTypes);
+
     this.hasNew = () => {
       return this.isAddNewFieldType ? '!!' : '!';
     };
