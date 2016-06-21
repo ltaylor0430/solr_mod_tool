@@ -1,11 +1,11 @@
 import uiRouter from 'angular-ui-router';
-import {fieldtypes} from './fieldtypes';
+import {solrCopyFields} from './copy';
 import {shared} from '../../shared/shared';
-import {fieldTypesDirective} from './fieldtypes.directive';
-import template from './fieldtypes.html';
-import {FieldTypesController} from './fieldtypes.controller';
+import {copyDirective} from './copy.directive';
+import template from './copy.html';
+import {CopyController} from './copy.controller';
 
-describe('FieldTypes', () => {
+describe('Copy Fields', () => {
   let $state;
   let $scope;
   let $log;
@@ -18,7 +18,7 @@ describe('FieldTypes', () => {
   // step 1. before each test load required modules
   beforeEach(module(uiRouter));
   beforeEach(module(shared.name));
-  beforeEach(module(fieldtypes.name));
+  beforeEach(module(solrCopyFields.name));
 // here is where we get reference to all things angular loads in step 1.
   beforeEach(inject((_$q_, _$rootScope_, _$log_, _$state_, _SchemaAPI_) => {
     $scope =    _$rootScope_;
@@ -29,20 +29,20 @@ describe('FieldTypes', () => {
 
     // uses mock objects
     makeController = (_log, _state, _schema) => {
-      return new FieldTypesController(_log, _state, _schema);
+      return new CopyController(_log, _state, _schema);
     };
   }));
 
   describe('module', () => {
      it('should have an appropriate name', () => {
-      expect(fieldtypes.name).to.equal('solrTypes');
+      expect(solrCopyFields.name).to.equal('solrCopyFields');
     });
 
   });
   describe('directive', () => {
     let ddo;
     beforeEach(() => {
-      ddo = fieldTypesDirective();
+      ddo = copyDirective();
     });
 
     it('should have the right template', () => {
@@ -50,7 +50,7 @@ describe('FieldTypes', () => {
     });
 
     it('should have the right controller', () => {
-      expect(ddo.controller).to.equal(FieldTypesController);
+      expect(ddo.controller).to.equal(CopyController);
     });
 
     it('should have an isolate scope', () => {

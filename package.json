@@ -4,7 +4,7 @@
   "description": "Import changes to solr's schema using the solr schema api.",
   "main": "app.js",
   "scripts": {
-    "test": "npm test",
+    "test": "karma start",
     "client": "grunt",
     "server": "node server/server.js",
     "start": "concurrently \"npm run server\" \"npm run client\""

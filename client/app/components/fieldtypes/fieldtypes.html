@@ -7,7 +7,7 @@
         <div ng-show=" vm.solrTypes.length> 0">
           <div ng-click="vm.editType(item,$index)" class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrTypes | filter:{ isNew: vm.hasNew()}) track by $index">
             <div class="mdl-card__title">
-              <s  class="removeItem" ng-bind="item.name" ng-if="item.remove"></s>
+              <s class="removeItem" ng-bind="item.name" ng-if="item.remove"></s>
               <h2 ng-if="!item.remove" ng-class="{ 'newItem' : item.isNew,'removeItem' : item.remove,'editItem' : item.replace } " class="mdl-card__title-text" style=" ">
               {{item.name}}</h2>
             </div>

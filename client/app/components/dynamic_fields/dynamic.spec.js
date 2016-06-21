@@ -1,11 +1,11 @@
 import uiRouter from 'angular-ui-router';
-import {fieldtypes} from './fieldtypes';
+import {dynamic} from './dynamic';
 import {shared} from '../../shared/shared';
-import {fieldTypesDirective} from './fieldtypes.directive';
-import template from './fieldtypes.html';
-import {FieldTypesController} from './fieldtypes.controller';
+import {dynamicFieldsDirective} from './dynamic.directive';
+import template from './dynamic.html';
+import {DynamicFieldsController} from './dynamic.controller';
 
-describe('FieldTypes', () => {
+describe('Dynamic Fields', () => {
   let $state;
   let $scope;
   let $log;
@@ -18,7 +18,7 @@ describe('FieldTypes', () => {
   // step 1. before each test load required modules
   beforeEach(module(uiRouter));
   beforeEach(module(shared.name));
-  beforeEach(module(fieldtypes.name));
+  beforeEach(module(dynamic.name));
 // here is where we get reference to all things angular loads in step 1.
   beforeEach(inject((_$q_, _$rootScope_, _$log_, _$state_, _SchemaAPI_) => {
     $scope =    _$rootScope_;
@@ -29,20 +29,20 @@ describe('FieldTypes', () => {
 
     // uses mock objects
     makeController = (_log, _state, _schema) => {
-      return new FieldTypesController(_log, _state, _schema);
+      return new DynamicFieldsController(_log, _state, _schema);
     };
   }));
 
   describe('module', () => {
      it('should have an appropriate name', () => {
-      expect(fieldtypes.name).to.equal('solrTypes');
+      expect(dynamic.name).to.equal('dynamic');
     });
 
   });
   describe('directive', () => {
     let ddo;
     beforeEach(() => {
-      ddo = fieldTypesDirective();
+      ddo = dynamicFieldsDirective();
     });
 
     it('should have the right template', () => {
@@ -50,7 +50,7 @@ describe('FieldTypes', () => {
     });
 
     it('should have the right controller', () => {
-      expect(ddo.controller).to.equal(FieldTypesController);
+      expect(ddo.controller).to.equal(DynamicFieldsController);
     });
 
     it('should have an isolate scope', () => {
