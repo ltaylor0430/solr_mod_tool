@@ -1,7 +1,7 @@
 import _ from 'lodash';
 //Item Detail
 class FieldTypeDetailsController {
-  constructor($scope, $log, $state, SchemaAPI) {
+  constructor($scope, $log, $state, SchemaAPI,$window) {
     this.fieldType              = {};
     this.params                = [];
     this.test                      = 'test!';
@@ -16,10 +16,12 @@ class FieldTypeDetailsController {
 
     this.init = () => {
       if (this.editMode) {
-        let selectedItem = SchemaAPI.solrTypes()[$state.params.index];
+        let selectedItem =  _.find(this.SchemaAPI.solrTypes(), 'uniqueID', $state.params.id);
+
+        //SchemaAPI.solrTypes()[$state.params.id];
         // Init Field Type
         let workingCopy = angular.copy(selectedItem);
-
+            console.log('working copy NAME = ' + (selectedItem.name || ''));
         this.initFieldType(workingCopy);
         this.initTokenizer(workingCopy);
       }
@@ -27,7 +29,7 @@ class FieldTypeDetailsController {
 
     this.initFieldType = (item) =>  {
       let exParams = _.chain(item)
-                      .omit(['name', 'class', 'analyzer', 'indexAnalyzer', 'queryAnalyzer'])
+                      .omit(['name', 'class', 'analyzer', 'indexAnalyzer', 'queryAnalyzer','uniqueID'])
                       .map((result, v) => { return {name: v, value: result}; })
                       .value();
       $log.debug(exParams);
@@ -60,24 +62,27 @@ class FieldTypeDetailsController {
       };
 
     this.save = () => {
-
       // add field type, but 1st add all optional params
       // TODO: reference fieldType as the destination object in directive
+      try {
+        _(this.params)
+            .forEach((item) => {
+              $log.debug(item);
+              this.fieldType[item.name] = item.value;
+            });
 
-      _(this.params)
-          .forEach((item) => {
-             $log.debug(item);
-            this.fieldType[item.name] = item.value;
-      });
-      if (this.editMode) {
-
+        if (this.editMode) {
           this.SchemaAPI.replaceFieldType( this.fieldType);
-
-      } else {
-        this.SchemaAPI.addFieldType( this.fieldType);
+         $state.go('^.itemDetails', {});
+        } else {
+          this.SchemaAPI.addFieldType( this.fieldType);
+           $state.reload();
+        }
+      } catch (e) {
+        $window.alert('Changes are pending, unable to save item.');
       }
       $log.debug(this.fieldType);
-      $state.go('^.itemDetails');
+
     };
 
     this.isFormDirty = () => {
@@ -86,8 +91,7 @@ class FieldTypeDetailsController {
     this.cancel = () => {
       $state.go('^.itemDetails');
     };
+  }
 }
-
-}
-  export {FieldTypeDetailsController};
+export {FieldTypeDetailsController};
 

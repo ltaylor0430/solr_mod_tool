@@ -76,7 +76,6 @@ describe('FieldTypes', () => {
                                   copyFields: []
                                 });
       schemaApi.setSchema(schema.object);
-      console.log(schemaApi.getSchema().fieldTypes);
      });
     afterEach(() => {
       sandbox.restore();
@@ -84,8 +83,9 @@ describe('FieldTypes', () => {
     it('should edit field type', () => {
 
         let spy = sandbox.spy($state,'go');
+        let item =  sandbox.mock({uniqueID:'boom_1'});
         const controller = makeController( $log, $state, schemaApi);
-        controller.editType();
+        controller.editType(item);
         assert($state.go.calledOnce, "method was not call or called too many times");
         // we change state, need to run a digest cycle
         $scope.$apply();

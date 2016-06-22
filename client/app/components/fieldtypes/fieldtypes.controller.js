@@ -12,13 +12,14 @@ class FieldTypesController {
     this.solrTypes = this.SchemaAPI.solrTypes();
 
     this.hasNew = () => {
-      return this.isAddNewFieldType ? '!!' : '!';
+
+     return this.isAddNewFieldType ? '!!' : '!';
     };
-    this.editType = (item, $index) => {
+    this.editType = (item) => {
       this.selectedItem = item;
 
       $log.debug('selected Item');
-      $state.go('fieldType.edit', {index: $index});
+      $state.go('fieldType.edit', {id: item.uniqueID});
       $log.debug(this.selectedItem);
     };
 
@@ -34,6 +35,7 @@ class FieldTypesController {
             this.fieldType[item.name] = item.value;
 //              _.extend(this.fieldType,item);
           });
+
       this.SchemaAPI.addFieldType( this.fieldType);
       $log.debug(this.fieldType);
       $state.go('^');

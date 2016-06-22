@@ -31,6 +31,19 @@ const schemaAPI = ($http, $log, API) => {
   };
 
   const setSchema = (curSchema) => {
+    // create unique id
+    let keys = ['fieldTypes', 'dynamicFields', 'copyFields', 'fields'];
+      let foo =_.chain(curSchema)
+      .pick(keys)
+      .map((result, key, col) => {
+           console.log(key);
+         _.each(col[key], (item) => {
+
+           item.uniqueID = (item.name || key) + '_' +  _.uniqueId();
+         });
+         return col[key];
+      }).value();
+
     existingSchema = curSchema;
     schema = existingSchema;
   };
@@ -42,20 +55,41 @@ const schemaAPI = ($http, $log, API) => {
 
   const addFieldType = (fieldType) => {
     fieldType.operation = 'new';
-    getSolrType().push(angular.copy(fieldType));
+
+    let itemExist = _.some(getSolrType(), ['name', fieldType.name]);
+    if  (itemExist || fieldType.uniqueID) {
+      throw new Error('Duplicate item exists');
+    }
+    // set unique ID
+    fieldType.uniqueID =  fieldType.name  + '_' +  _.uniqueId();
+    getSolrType().push(fieldType);
+
     // update localStorage;
     saveToLocalStorage();
   };
 
   const replaceFieldType = (fieldType) => {
-    fieldType.operation='replace';
-    getSolrType().push(angular.copy(fieldType));
-    //update localStorage;
+  // check array to see if this fieldType exist and is mark for replacement.
+       let filterItems = _.filter(getSolrType(), (x)=> { return angular.isDefined(x.operation);});
+
+
+    let itemExist = _.some(filterItems, ['name', fieldType.name]);
+    console.log(itemExist);
+    if  (itemExist) {
+      throw new Error('This item has uncommited changes');
+    }
+    fieldType.operation = 'replace';
+    getSolrType().push(fieldType);
     saveToLocalStorage();
   };
     // add  Field
   const addField = (field)  =>{
     field.operation = 'new';
+
+    let itemExist = _.some(getSolrFields(), ['name', field.name]);
+    if  (itemExist) {
+      throw new Error('Duplicate item exists');
+    }
     solrFields.push(angular.copy(field));
     // clear
     field = {};
@@ -64,6 +98,7 @@ const schemaAPI = ($http, $log, API) => {
   // add Copy Field
   const addCopyField = (cpField)  =>{
      cpField.operation = 'new';
+
      solrCopyFields.push(angular.copy(cpField));
      // clear
      cpField = {};
@@ -87,7 +122,7 @@ const schemaAPI = ($http, $log, API) => {
     } else {
       fieldType.operation = 'remove';
       // update
-      solrTypes[$index] = fieldType;
+      getSolrType()[$index] = fieldType;
       // remove field from schema
       $log.debug('removing field type');
       $log.debug(getSolrType());
@@ -97,10 +132,10 @@ const schemaAPI = ($http, $log, API) => {
     saveToLocalStorage();
   };
 
-   const  removeCopyField = (copyField,$index) => {
-      copyField.remove = true;
+   const  removeCopyField = (copyField, $index) => {
+       copyField.remove = true;
        if (angular.isDefined(copyField.isNew)) {
-        solrCopyFields.splice($index,1);
+        solrCopyFields.splice($index, 1);
       }
 
     };
@@ -128,7 +163,7 @@ const schemaAPI = ($http, $log, API) => {
                         return formData;
       }
     };
-    var fd = {xmlschema: formData};
+    let fd = {xmlschema: formData};
     $log.debug('form data: ');
     $log.debug(fd);
     return $http.post('/build/parseXML/',fd,config).then(({data}) => {
@@ -153,7 +188,7 @@ const schemaAPI = ($http, $log, API) => {
                 $log.debug(existingSchema);
                 solrFields = existingSchema.fields;
                 $log.debug(solrFields);
-                solrTypes = existingSchema.fieldTypes;
+             //   solrTypes = existingSchema.fieldTypes;
                 solrCopyFields = existingSchema.copyFields;
                 solrDynamicFields = existingSchema.dynamicFields;
                 saveToLocalStorage();
@@ -165,7 +200,7 @@ const schemaAPI = ($http, $log, API) => {
                 $log.debug(existingSchema);
                 solrFields = existingSchema.fields;
                 $log.debug(solrFields);
-                solrTypes = existingSchema.fieldTypes;
+           //    solrTypes = existingSchema.fieldTypes;
                 solrCopyFields = existingSchema.copyFields;
                 solrDynamicFields = existingSchema.dynamicFields;
                 saveToLocalStorage();
@@ -181,7 +216,7 @@ const schemaAPI = ($http, $log, API) => {
     };
 
     const getOutput = (command,output,key,_array) =>{
-      _.chain(_array).filter((o) => {return angular.isDefined(o.operation); })
+      _.chain(_array).filter((o) => {return o.operation === key; })
           .map( (o)=>{
               o = _.omit(o, 'operation');
               if (command ==='delete-field-type') {
@@ -202,21 +237,22 @@ const schemaAPI = ($http, $log, API) => {
 
   const loadFromLocalStorage = () => {
     localStorage.getItem('modified_schema');
-     let modSchema =  localStorage.getItem('modified_schema');
-      if (modSchema){
-         let obj_schema = JSON.parse(modSchema);
+    let modSchema =  localStorage.getItem('modified_schema');
+    if (modSchema){
+      let obj_schema = JSON.parse(modSchema);
 
-         setSchema(obj_schema);
-       if(getSchema().field) {
-         solrFields = getSchema().field;
-       } else {
-         solrFields = getSchema().fields;
-       }
-        if(getSchema().fieldType) {
+      setSchema(obj_schema);
+      if (getSchema().field) {
+        solrFields = getSchema().field;
+      } else {
+        solrFields = getSchema().fields;
+      }
+
+  /*    if(getSchema().fieldType) {
          solrTypes = getSchema().fieldType;
        } else {
          solrTypes = getSchema().fieldTypes;
-       }
+       }*/
        if(getSchema().copyField) {
          solrCopyFields = getSchema().copyField;
        } else {
@@ -232,35 +268,37 @@ const schemaAPI = ($http, $log, API) => {
 
     $log.debug(solrTypes);
   };
-const exportSchemaChanges = () => {
+  const exportSchemaChanges = () => {
 
-     let output = '';
-     let typeCommands = [{command: 'add-field-type',  key: 'operation.new'},
-                         {command: 'delete-field-type',  key: 'operation.remove'},
-                         {command: 'replace-field-type',  key: 'operation.replace'}];
-     let fieldCommands = [{command: 'add-field',  key: 'operation..new'},
-                          {command: 'delete-field',  key: 'operation.remove'},
-                          {command: 'replace-field',  key: 'operation.replace'}];
+    let output = '';
+    let typeCommands = [{command: 'add-field-type',  key: 'new'},
+                        {command: 'delete-field-type',  key: 'remove'},
+                        {command: 'replace-field-type',  key: 'replace'}];
+    let fieldCommands = [{command: 'add-field',  key: 'operation.new'},
+                         {command: 'delete-field',  key: 'operation.remove'},
+                         {command: 'replace-field',  key: 'operation.replace'}];
 
     let copyCommands = [{command: 'add-copy-field',  key: 'operation.new'},
                         {command: 'delete-copy-field',  key: 'operation.remove'}];
+
     $log.debug(getSolrType());
+
     _.each(typeCommands, (c) => {
       $log.debug(c);
-
-      output = getOutput(c.command, output, c.key, solrTypes);
+      console.log(existingSchema.fieldTypes);
+      output = getOutput(c.command, output, c.key, getSolrType());
     });
 
-    // fields
-     _.each(fieldCommands, (c) => {
+     // fields
+    _.each(fieldCommands, (c) => {
       output = getOutput(c.command, output, c.key, solrFields);
     });
-     _.each(copyCommands, (c) => {
+    _.each(copyCommands, (c) => {
       output = getOutput(c.command, output, c.key, solrCopyFields);
     });
 
-     $log.debug(output);
-     return output;
+    $log.debug(output);
+    return output;
 };
   const undoFieldTypeChanges = (fieldType, $index) => {
     delete fieldType.operation;

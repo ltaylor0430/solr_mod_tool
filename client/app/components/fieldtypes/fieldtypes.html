@@ -1,14 +1,14 @@
  <section  class="solrTypes">
     <h4>Field Types</h4>
-    <button class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-click="vm.isAddNewFieldType = !vm.isAddNewFieldType">Filter</button>
+    <button class="mdl-cell--bottom mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" ng-click="vm.isAddNewFieldType = !vm.isAddNewFieldType">Show Changes</button>
     <br/>
     <div class="mdl-grid items">
       <div class="mdl-cell mdl-cell--5-col">
-        <div ng-show=" vm.solrTypes.length> 0">
-          <div ng-click="vm.editType(item,$index)" class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrTypes | filter:{ isNew: vm.hasNew()}) track by $index">
+        <div ng-show=" vm.solrTypes.length > 0">
+          <div ng-click="vm.editType(item)" class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrTypes | filter:{ operation: vm.hasNew()}) track by $index">
             <div class="mdl-card__title">
               <s class="removeItem" ng-bind="item.name" ng-if="item.operation=='remove'"></s>
-              <h2 ng-if="!item.operation" ng-class="{ 'newItem' : item.operation=='new','removeItem' : item.operation=='remove','editItem' : item.operation=='replace' } " class="mdl-card__title-text" style=" ">
+              <h2 ng-if="item.operation != 'remove'"  ng-class="{ 'newItem' : item.operation=='new','removeItem' : item.operation=='remove','editItem' : item.operation=='replace' } " class="mdl-card__title-text" style=" ">
               {{item.name}}</h2>
             </div>
                 <div class="mdl-card__supporting-text">

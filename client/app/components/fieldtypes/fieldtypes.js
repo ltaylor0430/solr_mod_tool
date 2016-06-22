@@ -20,7 +20,7 @@ export const fieldtypes = angular.module('solrTypes', [])
    },
  })
   .state('fieldType.edit', {
-    url: '/edit/:index',
+    url: '/edit/:id',
     views: {
       'itemDetailsView': {
         template: '<editfieldtype edit-mode="true"></editfieldtype>'},
