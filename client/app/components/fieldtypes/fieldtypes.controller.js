@@ -50,5 +50,6 @@ class FieldTypesController {
     };
   }
 }
+FieldTypesController.$inject = ['$log', '$state', 'SchemaAPI'];
 export {FieldTypesController};
 

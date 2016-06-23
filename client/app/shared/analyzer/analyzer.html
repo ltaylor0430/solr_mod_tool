@@ -1,0 +1,49 @@
+<div  class="analyzer">
+        <h4>Tokenizer</h4>
+      <!--tokenizer type -->
+      <mat-radio name="indexQueryType"
+                         selected-Item ="vm.analyzer.tokenizerType"
+                         value="indexquery">
+       </mat-radio>
+       <label>Index &amp; Query</label>
+         <mat-radio name="separateType"
+                             selected-Item ="vm.analyzer.tokenizerType"
+                             value="separate">
+        </mat-radio>
+        <label>Separate</label>
+
+        <div  ng-if="vm.analyzer.tokenizerType == 'separate'">
+          <section name="indexTokenizer">
+             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input  class="mdl-textfield__input" type="text" autocomplete="off" name="tokenclass" ng-model="vm.analyzer.indexAnalyzer.tokenizer.class" />
+            <label class="mdl-textfield__label" for="tokenclass">Index</label>
+             </div>
+
+           <h4>Index Filters</h4>
+           <filters binding-to="vm.analyzer.filters"></filters>
+         </section>
+      <section name="queryAnalyzer">
+             <div  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input  class="mdl-textfield__input" type="text" autocomplete="off" name="querytokenclass" ng-model="vm.analyzer.queryAnalyzer.tokenizer.class" />
+            <label class="mdl-textfield__label" for="querytokenclass">Query</label>
+           </div>
+
+           <h4>Query Filters</h4>
+          <filters binding-to="vm.analyzer.filters"></filters>
+
+
+        </section>
+          </div>
+        <section name="indexquery" ng-if="vm.analyzer.tokenizerType =='indexquery'">
+            <div  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+
+              <input  class="mdl-textfield__input" type="text" autocomplete="off" name="tokenclass" ng-model="vm.analyzer.tokenizer.class" />
+              <label class="mdl-textfield__label" for="tokenclass">Name</label>
+
+           </div>
+           <!-- Tokenizer params -->
+           <params binding-to="vm.analyzer.tokenizerParams"></params>
+           <filters binding-to="vm.analyzer.filters"></filters>
+      </section>
+
+    </div>

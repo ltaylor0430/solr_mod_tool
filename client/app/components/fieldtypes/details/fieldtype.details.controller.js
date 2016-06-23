@@ -1,7 +1,7 @@
 import _ from 'lodash';
 //Item Detail
 class FieldTypeDetailsController {
-  constructor($scope, $log, $state, SchemaAPI,$window) {
+  constructor($scope, $log, $state, SchemaAPI, $window) {
     this.fieldType              = {};
     this.params                = [];
     this.test                      = 'test!';
@@ -16,14 +16,13 @@ class FieldTypeDetailsController {
 
     this.init = () => {
       if (this.editMode) {
-        let selectedItem =  _.find(this.SchemaAPI.solrTypes(), 'uniqueID', $state.params.id);
-
+        $log.debug($state.params);
+        let selectedItem = this.SchemaAPI.getSelectedType($state.params.id);
+      $log.debug(selectedItem);
         //SchemaAPI.solrTypes()[$state.params.id];
         // Init Field Type
-        let workingCopy = angular.copy(selectedItem);
-            console.log('working copy NAME = ' + (selectedItem.name || ''));
-        this.initFieldType(workingCopy);
-        this.initTokenizer(workingCopy);
+        this.initFieldType(selectedItem);
+        this.initTokenizer(selectedItem);
       }
     };
 
@@ -73,18 +72,21 @@ class FieldTypeDetailsController {
 
         if (this.editMode) {
           this.SchemaAPI.replaceFieldType( this.fieldType);
-         $state.go('^.itemDetails', {});
+          $state.go('^.itemDetails', {});
         } else {
           this.SchemaAPI.addFieldType( this.fieldType);
            $state.reload();
         }
       } catch (e) {
-        $window.alert('Changes are pending, unable to save item.');
+        // $window.alert('Changes are pending, unable to save item.');
+       // TODO: alert the user of an error
       }
       $log.debug(this.fieldType);
 
     };
-
+    this.getForm = () => {
+      return this.itemDetails;
+    }
     this.isFormDirty = () => {
        return this.itemDetails.$dirty;
     };
@@ -93,5 +95,6 @@ class FieldTypeDetailsController {
     };
   }
 }
+FieldTypeDetailsController.$inject = ['$scope', '$log', '$state', 'SchemaAPI', '$window'];
 export {FieldTypeDetailsController};
 

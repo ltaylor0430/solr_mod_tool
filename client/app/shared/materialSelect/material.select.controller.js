@@ -1,12 +1,9 @@
 export class  MaterialSelectController {
-  constructor($scope,$log){
+  constructor() {
 
     this.onSelectItemChange = (item) => {
-      console.log(item);
       this.selectedItem = item;
-      this.expanded =false;
-
+      this.expanded = false;
     };
-
   }
 }

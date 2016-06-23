@@ -26,6 +26,7 @@ describe('Field Type Details', () => {
     $state =    _$state_;
     $log =      _$log_;
     $q =        _$q_;
+    $window = _$window_;
     schemaApi = _SchemaAPI_;
 
     // uses mock objects
@@ -83,10 +84,19 @@ describe('Field Type Details', () => {
     afterEach(() => {
       sandbox.restore();
     });
-    it('should be in edit mode', () => {
-
+    it('should find a selectedItem', () => {
 
        let model = {name: 'test',
+                         uniqueID:'test_asdsad',
+                         class: 'solr.textfield',
+                         analyzer: {
+                                tokenizer:{name:'Moolah'},
+                                filters: [ {name:'Run'}]
+                                },
+                          random: 'random'
+                   };
+
+       let model2 = {name: 'test',
                          uniqueID:'test_1',
                          class: 'solr.textfield',
                          analyzer: {
@@ -95,32 +105,47 @@ describe('Field Type Details', () => {
                                 },
                           random: 'random'
                    };
-        sandbox.stub(schemaApi, 'solrTypes').returns(model);
+ schemaApi.getSchema().fieldTypes.push(model);
+  schemaApi.getSchema().fieldTypes.push(model2);
+        expect(schemaApi.getSelectedType('test_1')).to.eql(model2);
+
+    });
+    it('should be in edit mode', () => {
+    let model = {name: 'test',
+                         uniqueID:'test_1',
+                         class: 'solr.textfield',
+                         analyzer: {
+                                tokenizer:{name:'Moolah'},
+                                filters: [ {name:'Run'}]
+                                },
+                          random: 'random'
+                   };
+
 
         const controller = makeController($scope, $log, $state, schemaApi);
         controller.editMode =true;
         $state.params.id ='test_1';
-
+        schemaApi.getSchema().fieldTypes.push(model);
         controller.init();
         expect(controller.fieldType).to.have.all.keys('name','class',);
         expect (controller.tokenizerType).to.equal('indexquery');
-        expect (controller.tokenizer.name).to.equal(model[0].analyzer.tokenizer.name);
-        expect (controller.filters).to.eql(model[0].analyzer.filters);
+        expect (controller.tokenizer.name).to.equal(model.analyzer.tokenizer.name);
+        expect (controller.filters).to.eql(model.analyzer.filters);
 
     });
 
     it('should reset type', () => {
        let model = {name: 'test',
-                         uniqueID:'test_1',
-                         class: 'solr.textfield',
-                         analyzer: {
+                             uniqueID:'test_1',
+                             class: 'solr.textfield',
+                             analyzer: {
                                 tokenizer:{name:'Moolah'},
                                 filters: [ {name:'Run'}]
                                 },
                           random: 'random'
                    };
 
-        sandbox.stub(schemaApi, 'solrTypes').returns(model);
+        schemaApi.getSchema().fieldTypes.push(model);
         const controller = makeController($scope, $log, $state, schemaApi);
        $state.params.id ='test_1';
         controller.editMode =true;
@@ -154,6 +179,7 @@ describe('Field Type Details', () => {
                           random: 'random'
                    };
       });
+
        it('should save change', () => {
 
        //add field
@@ -183,17 +209,17 @@ describe('Field Type Details', () => {
     });
 
     it('should not save duplicate changes', () => {
+
+        schemaApi.getSchema().fieldTypes.push(model);
         let spy = sandbox.spy($state,'go');
         let mySpy = sandbox.spy(schemaApi,'addFieldType');
-        let windowSpy = sandbox.stub($window);
+        let windowSpy = sandbox.stub($window,'alert');
         const controller = makeController($scope, $log, $state, schemaApi,windowSpy);
 
-
-       $state.go('fieldType.itemDetails',{id:'test_1'});
-       $scope.$apply();
        controller.fieldType = model;
        controller.save();
-       expect(controller.save).to.throw(Error);
+       controller.save();
+       expect(mySpy).to.throw(Error);
        let output = schemaApi.exportSchemaChanges();
        let matches = (output.match(/\s?add-field-type\s?/g) || [] ).length;
        expect(matches).to.eql(1);
@@ -205,6 +231,8 @@ describe('Field Type Details', () => {
 
   });
   describe('template', () => {
-
+     it('should get the form', () => {
+        expect(template).to.match(/\s?vm.itemDetail\s?/g)
+     });
   });
 });

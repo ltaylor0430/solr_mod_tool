@@ -154,7 +154,6 @@ describe('Schema', () => {
 
   describe('template',  () =>{
     it('should call init', () => {
-       // console.log(template);
         expect(template).to.match(/\s?vm.init\s?/g)
     });
 

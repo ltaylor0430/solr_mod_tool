@@ -36,12 +36,12 @@ const schemaAPI = ($http, $log, API) => {
       let foo =_.chain(curSchema)
       .pick(keys)
       .map((result, key, col) => {
-           console.log(key);
-         _.each(col[key], (item) => {
-
-           item.uniqueID = (item.name || key) + '_' +  _.uniqueId();
-         });
-         return col[key];
+        _.each(col[key], (item) => {
+          if (!item.uniqueID) {
+             item.uniqueID = (item.name || key) + '_' +  _.uniqueId();
+          }
+        });
+        return col[key];
       }).value();
 
     existingSchema = curSchema;
@@ -142,7 +142,6 @@ const schemaAPI = ($http, $log, API) => {
    const importConfiguration= (collectionApi) => {
         return $http.jsonp(`${collectionApi}/schema?wt=json&json.wrf=JSON_CALLBACK&callback=JSON_CALLBACK`)
         .then(({data}) => {
-           schema =  data.schema;
            setSchema(data.schema);
            return getSchema();
         });
@@ -299,7 +298,19 @@ const schemaAPI = ($http, $log, API) => {
 
     $log.debug(output);
     return output;
-};
+  };
+
+  const getSelectedType = (itemId) => {
+
+    let myTypes = getSolrType();
+    let output = _.filter(myTypes, (x)=> {
+      console.log(x.uniqueID);
+      return (x.uniqueID || '') == itemId;
+    });
+    return output[0];
+//    return  _.find(getSolrType(), {'uniqueID': '' + itemId});
+  };
+
   const undoFieldTypeChanges = (fieldType, $index) => {
     delete fieldType.operation;
 //    delete fieldType.replace;
@@ -316,6 +327,7 @@ const schemaAPI = ($http, $log, API) => {
               addField,
               addFieldType,
               addCopyField,
+              getSelectedType,
               replaceFieldType,
               removeField,
               removeFieldType,
