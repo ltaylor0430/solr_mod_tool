@@ -5,7 +5,7 @@
     <div class="mdl-grid items">
       <div class="mdl-cell mdl-cell--5-col">
         <div ng-show=" vm.solrTypes.length > 0">
-          <div ng-click="vm.editType(item)" class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrTypes | filter:{ operation: vm.hasNew()}) track by $index">
+          <div ng-click="vm.editType(item)" class="fem-card mdl-card mdl-shadow--2dp" ng-repeat="item in vm.filterdTypes = (vm.solrTypes | filter:{ operation: vm.hasNew()})  | orderBy: 'name' track by $index ">
             <div class="mdl-card__title">
               <s class="removeItem" ng-bind="item.name" ng-if="item.operation=='remove'"></s>
               <h2 ng-if="item.operation != 'remove'"  ng-class="{ 'newItem' : item.operation=='new','removeItem' : item.operation=='remove','editItem' : item.operation=='replace' } " class="mdl-card__title-text" style=" ">
@@ -18,7 +18,7 @@
             <div class="mdl-card__menu ">
               <button  ng-disabled="item.operation=='remove'" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect " ng-click="vm.removeFieldType(item,$index) ">
                 <i class="material-icons">close</i></button>
-                  <button  ng-show="item.operation=='remove'" ng-click="vm.undoItemChanges(item, $index)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect " >
+                  <button  ng-show="item.operation=='remove'" ng-click="vm.undoItemChanges(item)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect " >
                 <i class="material-icons">restore</i></button>
             </div>
           </div>

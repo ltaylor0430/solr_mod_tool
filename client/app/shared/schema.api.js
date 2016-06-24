@@ -2,7 +2,8 @@ import _ from 'lodash';
 const schemaAPI = ($http, $log, API) => {
   let existingSchema = {};
   let schema =  {};
-  let solrTypes = [];
+  let originalSchema = {};
+  let originalTypes = [];
   let solrFields = [];
   let solrCopyFields =[];
   let solrDynamicFields = [];
@@ -49,7 +50,10 @@ const schemaAPI = ($http, $log, API) => {
   };
 
    // using local Storage to persist changes.
-  const saveToLocalStorage = () => {
+  const saveToLocalStorage = (isNewImport) => {
+    if (isNewImport) {
+       localStorage.setItem('original_schema', JSON.stringify(getSchema()));
+    }
     localStorage.setItem('modified_schema', JSON.stringify(getSchema()));
   };
 
@@ -105,11 +109,13 @@ const schemaAPI = ($http, $log, API) => {
     };
 
    //Remove fields
+
     const removeField = (fieldDef, $index)  =>{
       fieldDef.operation = 'remove';
       //remove field from schema
       saveToLocalStorage();
-        $log.debug(fieldDef);
+
+       $log.debug(fieldDef);
       if (angular.isDefined(fieldDef.isNew)) {
          solrFields.splice($index,1);
       }
@@ -117,17 +123,17 @@ const schemaAPI = ($http, $log, API) => {
     };
 
   const  removeFieldType = (fieldType, $index)  =>{
+    let index = getSelectedItemByIndex(getSolrType(), fieldType.uniqueID);
     if (fieldType.operation === 'new') {
-      getSolrType().splice($index, 1);
+      getSolrType().splice(index, 1);
     } else {
       fieldType.operation = 'remove';
       // update
-      getSolrType()[$index] = fieldType;
+       console.log(index);
+      getSolrType()[index].operation = 'remove';
       // remove field from schema
       $log.debug('removing field type');
       $log.debug(getSolrType());
-
-      $log.debug(solrTypes);
     }
     saveToLocalStorage();
   };
@@ -139,6 +145,7 @@ const schemaAPI = ($http, $log, API) => {
       }
 
     };
+
    const importConfiguration= (collectionApi) => {
         return $http.jsonp(`${collectionApi}/schema?wt=json&json.wrf=JSON_CALLBACK&callback=JSON_CALLBACK`)
         .then(({data}) => {
@@ -165,7 +172,7 @@ const schemaAPI = ($http, $log, API) => {
     let fd = {xmlschema: formData};
     $log.debug('form data: ');
     $log.debug(fd);
-    return $http.post('/build/parseXML/',fd,config).then(({data}) => {
+    return $http.post('/build/parseXML/', fd, config).then(({data}) => {
          //  schema.fieldTypes = _.clone(schema.types.fieldType);
              schema =  data.schema;
              //match the response to be the same as what is return from the schema api service.
@@ -190,7 +197,7 @@ const schemaAPI = ($http, $log, API) => {
              //   solrTypes = existingSchema.fieldTypes;
                 solrCopyFields = existingSchema.copyFields;
                 solrDynamicFields = existingSchema.dynamicFields;
-                saveToLocalStorage();
+                saveToLocalStorage(true);
       });
     };
  const importFromFile = (formFile) => {
@@ -202,7 +209,7 @@ const schemaAPI = ($http, $log, API) => {
            //    solrTypes = existingSchema.fieldTypes;
                 solrCopyFields = existingSchema.copyFields;
                 solrDynamicFields = existingSchema.dynamicFields;
-                saveToLocalStorage();
+                saveToLocalStorage(true);
       });
     };
 
@@ -235,9 +242,13 @@ const schemaAPI = ($http, $log, API) => {
     //
 
   const loadFromLocalStorage = () => {
-    localStorage.getItem('modified_schema');
+
     let modSchema =  localStorage.getItem('modified_schema');
-    if (modSchema){
+    let org_schema = localStorage.getItem('original_schema');
+    if (org_schema) {
+      originalSchema =  JSON.parse(org_schema);
+    }
+    if (modSchema) {
       let obj_schema = JSON.parse(modSchema);
 
       setSchema(obj_schema);
@@ -252,20 +263,19 @@ const schemaAPI = ($http, $log, API) => {
        } else {
          solrTypes = getSchema().fieldTypes;
        }*/
-       if(getSchema().copyField) {
+       if (getSchema().copyField) {
          solrCopyFields = getSchema().copyField;
        } else {
          solrCopyFields = getSchema().copyFields;
        }
-             }
-       if(getSchema().dynamicField) {
+     }
+       if (getSchema().dynamicField) {
          solrDynamicFields = getSchema().dynamicField;
        } else {
          solrDynamicFields = getSchema().dynamicFields;
        }
 
 
-    $log.debug(solrTypes);
   };
   const exportSchemaChanges = () => {
 
@@ -300,25 +310,44 @@ const schemaAPI = ($http, $log, API) => {
     return output;
   };
 
+   const getSelectedItemByIndex = (arr, itemId,fieldName ='uniqueID') =>{
+     let index = _.findIndex(arr, [fieldName, itemId]);
+     return index;
+  };
   const getSelectedType = (itemId) => {
 
     let myTypes = getSolrType();
-    let output = _.filter(myTypes, (x)=> {
+    let index = _.findIndex(myTypes,['uniqueID', itemId]);
+     return myTypes[index];
+   /* let output = _.filter(myTypes, (x)=> {
       console.log(x.uniqueID);
       return (x.uniqueID || '') == itemId;
-    });
-    return output[0];
+    });*/
+//    return output[0];
 //    return  _.find(getSolrType(), {'uniqueID': '' + itemId});
   };
+  const getOriginalSchema = () => {
+    return originalSchema;
+  }
+  const undoFieldTypeChanges = (fieldType, i) => {
 
-  const undoFieldTypeChanges = (fieldType, $index) => {
+      let index = getSelectedItemByIndex(getSolrType(),fieldType.uniqueID);
+//    delete fieldType.operation;
+    //remove  and replace with original.
+
     delete fieldType.operation;
-//    delete fieldType.replace;
-    // update
-    solrTypes[$index] = fieldType;
-    saveToLocalStorage();
+    console.log('undoing : ' + index );
+    if (index != -1) {
+        getSolrType().splice(index, 1);
+
+        let oldIdx = getSelectedItemByIndex(getOriginalSchema().fieldTypes, fieldType.uniqueID);
+
+        getSolrType().push(getOriginalSchema().fieldTypes[oldIdx]);
+        saveToLocalStorage();
+    }
   };
   return {getSchema,
+              getOriginalSchema,
               setSchema,
               solrTypes: getSolrType,
               solrFields: getSolrFields,
@@ -328,6 +357,7 @@ const schemaAPI = ($http, $log, API) => {
               addFieldType,
               addCopyField,
               getSelectedType,
+              getSelectedItemByIndex,
               replaceFieldType,
               removeField,
               removeFieldType,

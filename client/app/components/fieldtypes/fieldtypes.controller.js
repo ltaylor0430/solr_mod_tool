@@ -15,6 +15,10 @@ class FieldTypesController {
 
      return this.isAddNewFieldType ? '!!' : '!';
     };
+    this.sortType = (list) => {
+        return _.sortBy(list, ['name']);
+    };
+
     this.editType = (item) => {
       this.selectedItem = item;
 

@@ -10,6 +10,7 @@ export const paramDirective = () => {
     controllerAs: 'vm',
     restrict: 'E',
     replace: true,
+    bindToController:true,
     scope: {bindingTo:'='}
 
   };

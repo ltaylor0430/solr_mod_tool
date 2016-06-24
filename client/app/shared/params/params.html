@@ -1,61 +1,43 @@
   <div>
-<p style="font-size:16px;font-weight:bold">Parameters
-  <button  ng-click="vm.toggleParams = !vm.toggleParams" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect mdl-button--accent">
-                        <i ng-if="!vm.toggleParams" class="material-icons">add_circle</i>
-                        <i ng-if="vm.toggleParams" class="material-icons">remove_circle</i>
-
-                        </button>
-                         </p>
+<p style="font-size:16px;font-weight:bold">Parameters</p>
 <div  class="mdl_grid items">
-      <div ng-show="vm.toggleParams" class="mdl-cell mdl-cell--12-col">
-        <div class="fem-card mdl-card ">
-            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input  class="mdl-textfield__input" type="text" autocomplete="off"  name="paramName" ng-model="param.name"/>
-              <label class="mdl-textfield__label" for="paramValue">Parameter Name</label>
-            </div>
-            <p ng-show="form.$submitted || form.paName.$touched">
-          <span ng-show="form.paName.$error.required">Name required.</span>
-            </p>
 
-
-
-           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-              <input  class="mdl-textfield__input" type="text" autocomplete="off"  name="paramValue" ng-model="param.value"/>
-              <label class="mdl-textfield__label" for="paramValue">Parameter Value</label>
-            </div>
-
-
-            <button  ng-click="vm.addParam(param)" class="mdl-button   mdl-js-button mdl-js-ripple-effect ">
-                     Add</button>
-
-
-</div>
-</div>
-<div ng-show="vm.params.length" class="params mdl-cell mdl-cell--12-col">
+<div  class="params mdl-cell mdl-cell--12-col">
 
 
     <table class="mdl-data-table mdl-js-data-table mdl-data-table mdl-shadow--2dp">
   <thead>
     <tr>
-    <th class="mdl-data-table__cell--non-numeric">&nbsp;</th>
+
       <th class="mdl-data-table__cell--non-numeric">Name</th>
       <th class="mdl-data-table__cell--non-numeric">Value</th>
+      <th class="mdl-data-table__cell--non-numeric"></th>
     </tr>
   </thead>
   <tbody>
 
     <tr  ng-repeat="item in vm.params track by $index">
-        <td class="mdl-data-table__cell--non-numeric">
-        <button  ng-click="vm.removeParam(item,$index)" class="mdl-button mdl-button--icon  mdl-button--accent">
-        <i class="material-icons">remove_circle</i></button>
-        <td class="mdl-data-table__cell--non-numeric" ng-bind="item.name"></td>
-        <td class="mdl-data-table__cell--non-numeric" ng-bind="item.value"></td>
+
+        <td  class="mdl-data-table__cell--non-numeric"  ><span  editable-item="item.name"  data-toggle="$index == vm.editIndex"ng-bind="item.name"></span></td>
+        <td class="mdl-data-table__cell--non-numeric"><span  editable-item="item.value" data-toggle="$index == vm.editIndex" ng-bind="item.value"></span></td>
+               <td class="mdl-data-table__cell--non-numeric">
+              <button  ng-click="vm.editItem(item, $index)" class="mdl-button mdl-button--icon  mdl-button--accent">
+        <i class="material-icons">mode_edit</i></button>
+           <button  ng-click="vm.removeParam(item, $index)" class="mdl-button mdl-button--icon  mdl-button--accent">
+        <i class="material-icons">delete_forever</i></button>
+        </td>
     </tr>
-    </div>
+    <tr >
+
+    <td><span class="warning" ng-show="vm.hasErrors">required</span><input placeholder="name"   class="mdl-textfield__input" type="text"  ng-model="param.name"/></td>
+    <td><span class="warning" ng-show="vm.hasErrors">required</span><input   placeholder="value" class="mdl-textfield__input" type="text" ng-model="param.value"/></td>
+     <td><button   ng-click="vm.addParam(param)"   class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-button--accent"> Add</button>  </td>
+     </tr>
     </tbody>
     </table>
 
     </div>
+
     </div>
   </div>
 

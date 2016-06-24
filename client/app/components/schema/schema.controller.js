@@ -3,6 +3,7 @@ class SchemaController {
 
   // bind to this and not $scope
   // because of controllerAs.
+
   constructor($scope, $log, $state, SchemaAPI) {
     this.solrCollectionUrl = 'http://solr1:8983/solr/gateway_collection';
     this.schema =  undefined;

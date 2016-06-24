@@ -108,7 +108,7 @@ describe('FieldTypes', () => {
 
         const controller = makeController( $log, $state, schemaApi);
 
-        schemaApi.solrTypes().push( {name:'foo'});
+        schemaApi.solrTypes().push( {name:'foo', uniqueID: 'foo_1'});
         expect(schemaApi.solrTypes()).to.have.lengthOf(1);
         controller.removeFieldType(schemaApi.solrTypes()[0],0);
         expect(schemaApi.solrTypes()[0]).to.have.property('operation').and.to.equal('remove');
@@ -126,18 +126,18 @@ describe('FieldTypes', () => {
     });
     it('should undo item changes', () => {
         const controller = makeController( $log, $state, schemaApi);
-
-        schemaApi.solrTypes().push( {name:'foo', operation:'replace'});
+        sandbox.stub(schemaApi, 'getSelectedItemByIndex').returns(0);
+        schemaApi.solrTypes().push( {name:'foo', uniqueID:'foo_1', operation:'replace'});
         expect(schemaApi.solrTypes()).to.have.lengthOf(1);
         controller.undoItemChanges(schemaApi.solrTypes()[0],0);
         expect(schemaApi.solrTypes()[0]).to.not.have.property('operation');
-
+       expect(schemaApi.getSchema().fieldTypes[0]).to.not.have.property('operation');
     });
 
    it('should replace item', () => {
         const controller = makeController( $log, $state, schemaApi);
         schemaApi.solrTypes().push( {name:'foo', operation:'new'});
-        controller.removeFieldType(schemaApi.solrTypes()[0],0);
+        controller.removeFieldType(schemaApi.solrTypes()[0]);
         expect(schemaApi.solrTypes()).to.have.lengthOf(0);
     });
 

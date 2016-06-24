@@ -1,14 +1,26 @@
 class ParamsController {
   constructor($scope) {
-    this.params = $scope.bindingTo;
+    this.params = this.bindingTo;
     this.toggleParams = false;
+    this.hasErrors  = false;
     this.addParam = (param) =>{
-      const newParam = {name: param.name,
-                                       value: param.value};
-        this.params.push(newParam);
-        param.name = '';
-        param.value ='';
+      if (param.name && param.value ) {
+            const newParam = {name: param.name,
+                                           value: param.value};
 
+            this.params.push(newParam);
+
+            param.name = '';
+            param.value ='';
+            this.hasErrors = false;
+            }
+            else {
+              this.hasErrors = true;
+            }
+    };
+    this.editItem  = (item,$index) => {
+          console.log('edit item click');
+          this.editIndex = $index;
     };
     this.getParams = () => {
       return this.params;

@@ -3,7 +3,7 @@ import {SchemaAPI} from './schema.api';
 describe('Schema API', () => {
   let $q;
   let $log;
-  beforeEach(inject((_$q_,_$log_))=> {
+  beforeEach(inject(_$q_,_$log_)=> {
     $q = _$q_
     $log = _$log_;
 

@@ -28,7 +28,7 @@ class FieldTypeDetailsController {
 
     this.initFieldType = (item) =>  {
       let exParams = _.chain(item)
-                      .omit(['name', 'class', 'analyzer', 'indexAnalyzer', 'queryAnalyzer','uniqueID'])
+                      .omit(['name', 'class', 'analyzer', 'indexAnalyzer', 'queryAnalyzer', 'uniqueID'])
                       .map((result, v) => { return {name: v, value: result}; })
                       .value();
       $log.debug(exParams);
