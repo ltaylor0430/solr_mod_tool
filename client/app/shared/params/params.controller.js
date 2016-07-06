@@ -20,7 +20,11 @@ class ParamsController {
     };
     this.editItem  = (item,$index) => {
           console.log('edit item click');
-          this.editIndex = $index;
+          if (this.editIndex == $index) {
+            this.editIndex = -1;
+          } else {
+            this.editIndex = $index;
+          }
     };
     this.getParams = () => {
       return this.params;
